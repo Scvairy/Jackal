@@ -56,15 +56,61 @@ namespace Jackal
                     // imageUri = new Uri("./tiles/airplane.png",UriKind.Relative);
                     // for each case of tile types, substituting path to image with what you need in particular case
 
-                    case (TileType.water):
-
                     case (TileType.grass1):
+                        ImageUri = new Uri("./tiles/empty-1.png", UriKind.Relative);
+                        break;
 
                     case (TileType.grass2):
+                        ImageUri = new Uri("./tiles/empty-2.png", UriKind.Relative);
+                        break;
 
                     case (TileType.grass3):
+                        ImageUri = new Uri("./tiles/empty-3.png", UriKind.Relative);
+                        break;
 
                     case (TileType.grass4):
+                        ImageUri = new Uri("./tiles/empty-4.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.rum):
+                        ImageUri = new Uri("./tiles/keg-of-rum.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.ice):
+                        ImageUri = new Uri("./tiles/ice.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.hole):
+                        ImageUri = new Uri("./tiles/pitfall.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.croc):
+                        ImageUri = new Uri("./tiles/crocodile.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.cannibal):
+                        ImageUri = new Uri("./tiles/cannibal.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.fort):
+                        ImageUri = new Uri("./tiles/fort.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.gfort):
+                        ImageUri = new Uri("./tiles/fort-w-aborigine.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.gold):
+
+                    case (TileType.balloon):
+                        ImageUri = new Uri("./tiles/baloon.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.cannon):
+                        ImageUri = new Uri("./tiles/gun.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.water):
 
                     case (TileType.astr1):
 
@@ -80,8 +126,6 @@ namespace Jackal
 
                     case (TileType.adiag4):
 
-                    case (TileType.rum):
-
                     case (TileType.lab2):
 
                     case (TileType.lab3):
@@ -90,26 +134,8 @@ namespace Jackal
 
                     case (TileType.lab5):
 
-                    case (TileType.ice):
-
-                    case (TileType.hole):
-
-                    case (TileType.croc):
-
-                    case (TileType.cannibal):
-
-                    case (TileType.fort):
-
-                    case (TileType.gfort):
-
-                    case (TileType.gold):
-
-                    case (TileType.balloon):
-
-                    case (TileType.cannon):
-
                     default: // TODO: remove this when proper image arranging is done
-                        ImageUri = new Uri("./tiles/airplane.png",UriKind.Relative);
+                        ImageUri = new Uri("./tiles/airplane.png", UriKind.Relative);
                         break;
                 }
             }
@@ -238,7 +264,7 @@ namespace Jackal
 
             public BitmapImage[,] GetBitmapImages() // returns two-dimensional array of images for tiles at the board
             {
-                var imgs = new BitmapImage[12,12];
+                var imgs = new BitmapImage[12, 12];
 
                 for (int y = 0; y < 12; y++)
                 {
@@ -247,8 +273,8 @@ namespace Jackal
                         var currentTile = output[x, y];
                         // if image is null, return empty-1 by default
                         // TODO: change this later
-                        var currentImage = currentTile == null ? 
-                            new BitmapImage(new Uri("./tiles/empty-1.png", UriKind.Relative)) 
+                        var currentImage = currentTile == null ?
+                            new BitmapImage(new Uri("./tiles/empty-1.png", UriKind.Relative))
                             : currentTile.GetBitmapImage();
                         imgs[x, y] = currentImage;
                     }
