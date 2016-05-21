@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Jackal
 {
@@ -23,18 +11,40 @@ namespace Jackal
         public int w = 100, h = 100;
         public MainWindow()
         {
+            SizeToContent = SizeToContent.WidthAndHeight; // fits window size to content size
             InitializeComponent();
             App.Board Board = new App.Board();
             
             var o = App.Board.output;
-            /*
-            var window = new Window();
-            var stackPanel = new StackPanel { Orientation = Orientation.Vertical };
-            stackPanel.Children.Add(new Label { Content = "Label" });
-            stackPanel.Children.Add(new Button { Content = "Button" });
-            window.Content = stackPanel;
-            window.Show(); //баловашки с WPF и динамическим изменением интерфейса*/
 
+            DrawTiles(Board); // Draw all tiles on grid. To draw current state of board, simply call this method
+
+            //var window = new Window();
+            //var stackPanel = new StackPanel { Orientation = Orientation.Vertical };
+            //stackPanel.Children.Add(new Label { Content = "Label" });
+            //stackPanel.Children.Add(new Button { Content = "Button" });
+            //window.Content = stackPanel;
+            //window.Show(); //баловашки с WPF и динамическим изменением интерфейса
+
+        }
+
+        void DrawTiles(App.Board board) // draws all tiles of given board on grid. To draw current state of board, simply call this method
+        {
+            var tileImages = board.GetBitmapImages();
+
+            for (var y = 0; y < tileImages.GetLength(1); y++)
+            {
+                for (var x = 0; x < tileImages.GetLength(0); x++)
+                {
+                    var currentImageToShow = new Image();
+                    var src = tileImages[x, y];
+                    currentImageToShow.Source = src;
+                    currentImageToShow.Stretch = System.Windows.Media.Stretch.Uniform;
+                    grid.Children.Add(currentImageToShow); // add image to grid
+                    Grid.SetColumn(currentImageToShow, y); // move it to appropriate column
+                    Grid.SetRow(currentImageToShow, x);  // and row
+                }
+            }
         }
     }
 }
