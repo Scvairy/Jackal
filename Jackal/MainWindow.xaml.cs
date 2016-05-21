@@ -33,7 +33,7 @@ namespace Jackal
             stackPanel.Children.Add(new Label { Content = "Label" });
             stackPanel.Children.Add(new Button { Content = "Button" });
             window.Content = stackPanel;
-            window.Show(); //баловашки с WPF и динамическим изменением интерфейса/
+            window.Show(); //баловашки с WPF и динамическим изменением интерфейса*/
 
         }
     }
