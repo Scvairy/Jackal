@@ -7,11 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid x:Name="grid">
-        <!--<Grid.Resources>
-            <Style TargetType="DataGridCell">
-                <Setter Property="  Value="2" />
-            </Style>
-        </Grid.Resources>-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="{Binding w}" />
             <ColumnDefinition Width="{Binding w}" />
