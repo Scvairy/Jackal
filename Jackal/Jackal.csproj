@@ -101,6 +101,43 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="tiles\airplane.png" />
+    <Resource Include="tiles\arrow-1.png" />
+    <Resource Include="tiles\arrow-2.png" />
+    <Resource Include="tiles\arrow-3.png" />
+    <Resource Include="tiles\arrow-4.png" />
+    <Resource Include="tiles\arrow-5.png" />
+    <Resource Include="tiles\arrow-6.png" />
+    <Resource Include="tiles\arrow-7.png" />
+    <Resource Include="tiles\balloon.png" />
+    <Resource Include="tiles\cannibal.png" />
+    <Resource Include="tiles\coins-1.png" />
+    <Resource Include="tiles\coins-2.png" />
+    <Resource Include="tiles\coins-3.png" />
+    <Resource Include="tiles\coins-4.png" />
+    <Resource Include="tiles\coins-5.png" />
+    <Resource Include="tiles\crocodile.png" />
+    <Resource Include="tiles\empty-1.png" />
+    <Resource Include="tiles\empty-2.png" />
+    <Resource Include="tiles\empty-3.png" />
+    <Resource Include="tiles\empty-4.png" />
+    <Resource Include="tiles\fort-w-aborigine.png" />
+    <Resource Include="tiles\fort.png" />
+    <Resource Include="tiles\gun.png" />
+    <Resource Include="tiles\horse.png" />
+    <Resource Include="tiles\ice.png" />
+    <Resource Include="tiles\keg-of-rum.png" />
+    <Resource Include="tiles\pitfall.png" />
+    <Resource Include="tiles\rotate-2.png" />
+    <Resource Include="tiles\rotate-3.png" />
+    <Resource Include="tiles\rotate-4.png" />
+    <Resource Include="tiles\rotate-5.png" />
+    <Resource Include="tiles\ship-1.png" />
+    <Resource Include="tiles\ship-2.png" />
+    <Resource Include="tiles\ship-3.png" />
+    <Resource Include="tiles\ship-4.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

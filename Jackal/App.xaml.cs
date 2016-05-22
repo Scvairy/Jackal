@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json;
+using System.Windows.Media.Imaging;
 
 namespace Jackal
 {
@@ -17,6 +14,8 @@ namespace Jackal
         public enum Team { none, red, black, yellow, white }
         public class Tile
         {
+            private Uri ImageUri { get; set; } // relative path to image
+
             public enum TileType { water, grass1, grass2, grass3, grass4, astr1, adiag1, adiag2, astr2, a3, astr4, adiag4, rum, lab2, lab3, lab4, lab5, ice, hole, croc, cannibal, fort, gfort, gold, balloon, cannon/*, horse, plane*/}
 
             [JsonProperty("type")]
@@ -39,8 +38,8 @@ namespace Jackal
 
             [JsonProperty("opened")]
             public bool opened { get; set; }
-            
-            
+
+
             public Tile(TileType type, short gold, Team team, bool pirate1, bool pirate2, bool pirate3, bool opened)
             {
                 this.type = type;
@@ -50,8 +49,107 @@ namespace Jackal
                 this.pirate2 = pirate2;
                 this.pirate3 = pirate3;
                 this.opened = opened;
+
+                switch (type) // setup image paths according to tile types
+                {
+                    // TODO: here you have to do
+                    // imageUri = new Uri("./tiles/airplane.png",UriKind.Relative);
+                    // for each case of tile types, substituting path to image with what you need in particular case
+
+                    case (TileType.grass1):
+                        ImageUri = new Uri("./tiles/empty-1.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.grass2):
+                        ImageUri = new Uri("./tiles/empty-2.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.grass3):
+                        ImageUri = new Uri("./tiles/empty-3.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.grass4):
+                        ImageUri = new Uri("./tiles/empty-4.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.rum):
+                        ImageUri = new Uri("./tiles/keg-of-rum.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.ice):
+                        ImageUri = new Uri("./tiles/ice.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.hole):
+                        ImageUri = new Uri("./tiles/pitfall.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.croc):
+                        ImageUri = new Uri("./tiles/crocodile.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.cannibal):
+                        ImageUri = new Uri("./tiles/cannibal.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.fort):
+                        ImageUri = new Uri("./tiles/fort.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.gfort):
+                        ImageUri = new Uri("./tiles/fort-w-aborigine.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.gold):
+
+                    case (TileType.balloon):
+                        ImageUri = new Uri("./tiles/baloon.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.cannon):
+                        ImageUri = new Uri("./tiles/gun.png", UriKind.Relative);
+                        break;
+
+                    case (TileType.water):
+
+                    case (TileType.astr1):
+
+                    case (TileType.adiag1):
+
+                    case (TileType.adiag2):
+
+                    case (TileType.astr2):
+
+                    case (TileType.a3):
+
+                    case (TileType.astr4):
+
+                    case (TileType.adiag4):
+
+                    case (TileType.lab2):
+
+                    case (TileType.lab3):
+
+                    case (TileType.lab4):
+
+                    case (TileType.lab5):
+
+                    default: // TODO: remove this when proper image arranging is done
+                        ImageUri = new Uri("./tiles/airplane.png", UriKind.Relative);
+                        break;
+                }
+            }
+
+            public BitmapImage GetBitmapImage() // returns assigned bitmap image for tile
+            {
+                BitmapImage img = new BitmapImage();
+                img.BeginInit();
+                img.UriSource = ImageUri;
+                img.EndInit();
+                return img;
             }
         }
+
         public class Board
         {
             public static Tile[,] output { get; set; }
@@ -82,7 +180,7 @@ namespace Jackal
                 for (int y = 2; y < 10; y++)
                     for (int x = 2; x < 10; x++)
                         Fill(x, y, rand, tiles, board); //2,2 -> 9,9
-                
+
 
                 for (int y = 0; y < 12; y++)
                     for (int x = 0; x < 12; x += 11)
@@ -162,6 +260,27 @@ namespace Jackal
                     tiles.Add(new Tile(Tile.TileType.cannon, 0, Team.none, false, false, false, false));
 
                 return tiles;
+            }
+
+            public BitmapImage[,] GetBitmapImages() // returns two-dimensional array of images for tiles at the board
+            {
+                var imgs = new BitmapImage[12, 12];
+
+                for (int y = 0; y < 12; y++)
+                {
+                    for (int x = 0; x < 12; x++)
+                    {
+                        var currentTile = output[x, y];
+                        // if image is null, return empty-1 by default
+                        // TODO: change this later
+                        var currentImage = currentTile == null ?
+                            new BitmapImage(new Uri("./tiles/empty-1.png", UriKind.Relative))
+                            : currentTile.GetBitmapImage();
+                        imgs[x, y] = currentImage;
+                    }
+                }
+
+                return imgs;
             }
         }
 
