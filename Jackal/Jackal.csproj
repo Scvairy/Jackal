@@ -132,6 +132,9 @@
     <Content Include="tiles\cannibal.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="tiles\closed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="tiles\coins-1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
