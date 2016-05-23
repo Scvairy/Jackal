@@ -38,6 +38,9 @@ namespace Jackal
 
             [JsonProperty("opened")]
             public bool opened { get; set; }
+            
+            //TODO: Direction of arrows
+            //public direction direction { get; set; }
 
 
             public Tile(TileType type, short gold, Team team, bool pirate1, bool pirate2, bool pirate3, bool opened)
