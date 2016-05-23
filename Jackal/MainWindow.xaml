@@ -33,6 +33,7 @@
             <RowDefinition Height="{Binding h}" />
             <RowDefinition Height="{Binding h}" />
             <RowDefinition Height="{Binding h}" />
+            <RowDefinition Height="{Binding h}" />
         </Grid.RowDefinitions>
     </Grid>
 </Window>

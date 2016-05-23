@@ -19,13 +19,7 @@ namespace Jackal
 
             DrawTiles(Board); // Draw all tiles on grid. To draw current state of board, simply call this method
 
-            //var window = new Window();
-            //var stackPanel = new StackPanel { Orientation = Orientation.Vertical };
-            //stackPanel.Children.Add(new Label { Content = "Label" });
-            //stackPanel.Children.Add(new Button { Content = "Button" });
-            //window.Content = stackPanel;
-            //window.Show(); //баловашки с WPF и динамическим изменением интерфейса
-
+           
         }
 
         void DrawTiles(App.Board board) // draws all tiles of given board on grid. To draw current state of board, simply call this method
@@ -41,8 +35,8 @@ namespace Jackal
                     currentImageToShow.Source = src;
                     currentImageToShow.Stretch = System.Windows.Media.Stretch.Uniform;
                     grid.Children.Add(currentImageToShow); // add image to grid
-                    Grid.SetColumn(currentImageToShow, y); // move it to appropriate column
-                    Grid.SetRow(currentImageToShow, x);  // and row
+                    Grid.SetColumn(currentImageToShow, x); // move it to appropriate column
+                    Grid.SetRow(currentImageToShow, y);  // and row
                 }
             }
         }

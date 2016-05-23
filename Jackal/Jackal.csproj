@@ -102,41 +102,122 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="tiles\airplane.png" />
-    <Resource Include="tiles\arrow-1.png" />
-    <Resource Include="tiles\arrow-2.png" />
-    <Resource Include="tiles\arrow-3.png" />
-    <Resource Include="tiles\arrow-4.png" />
-    <Resource Include="tiles\arrow-5.png" />
-    <Resource Include="tiles\arrow-6.png" />
-    <Resource Include="tiles\arrow-7.png" />
-    <Resource Include="tiles\balloon.png" />
-    <Resource Include="tiles\cannibal.png" />
-    <Resource Include="tiles\coins-1.png" />
-    <Resource Include="tiles\coins-2.png" />
-    <Resource Include="tiles\coins-3.png" />
-    <Resource Include="tiles\coins-4.png" />
-    <Resource Include="tiles\coins-5.png" />
-    <Resource Include="tiles\crocodile.png" />
-    <Resource Include="tiles\empty-1.png" />
-    <Resource Include="tiles\empty-2.png" />
-    <Resource Include="tiles\empty-3.png" />
-    <Resource Include="tiles\empty-4.png" />
-    <Resource Include="tiles\fort-w-aborigine.png" />
-    <Resource Include="tiles\fort.png" />
-    <Resource Include="tiles\gun.png" />
-    <Resource Include="tiles\horse.png" />
-    <Resource Include="tiles\ice.png" />
-    <Resource Include="tiles\keg-of-rum.png" />
-    <Resource Include="tiles\pitfall.png" />
-    <Resource Include="tiles\rotate-2.png" />
-    <Resource Include="tiles\rotate-3.png" />
-    <Resource Include="tiles\rotate-4.png" />
-    <Resource Include="tiles\rotate-5.png" />
-    <Resource Include="tiles\ship-1.png" />
-    <Resource Include="tiles\ship-2.png" />
-    <Resource Include="tiles\ship-3.png" />
-    <Resource Include="tiles\ship-4.png" />
+    <Resource Include="tiles\airplane.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\arrow-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\arrow-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\arrow-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\arrow-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\arrow-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\arrow-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\arrow-7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\balloon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\cannibal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\coins-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\coins-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\coins-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\coins-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\coins-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\crocodile.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\empty-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\empty-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\empty-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\empty-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\fort-w-aborigine.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\fort.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\gun.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\horse.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\ice.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\keg-of-rum.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\pitfall.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\rotate-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\rotate-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\rotate-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\rotate-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\ship-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\ship-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\ship-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\ship-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="tiles\water.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tiles\empty!.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tiles\empty.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
