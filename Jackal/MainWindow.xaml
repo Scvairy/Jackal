@@ -20,8 +20,10 @@
             <ColumnDefinition Width="{Binding w}" />
             <ColumnDefinition Width="{Binding w}" />
             <ColumnDefinition Width="{Binding w}" />
+            <ColumnDefinition Width="{Binding w}" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="{Binding h}" />
             <RowDefinition Height="{Binding h}" />
             <RowDefinition Height="{Binding h}" />
             <RowDefinition Height="{Binding h}" />

@@ -8,7 +8,7 @@ namespace Jackal
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int w = 100, h = 100;
+        public int w = 50, h = 500;
         public MainWindow()
         {
             SizeToContent = SizeToContent.WidthAndHeight; // fits window size to content size

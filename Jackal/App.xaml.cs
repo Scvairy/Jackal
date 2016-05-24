@@ -195,37 +195,37 @@ namespace Jackal
         public class Board
         {
             public static Tile[,] output { get; set; }
-            public static int r = 117;
             public Board()
             {
-                Random rand = new Random();
                 var tiles = GenerateAllTiles();
                 if (tiles.Count != 117)
                 {
                     MessageBox.Show("Количество тайлов не совпадает");
+                    return;
                 }
-                Tile[,] board = new Tile[12, 12];
+                Random rand = new Random();
+                Tile[,] board = new Tile[13, 13];
 
-                for (int y = 0; y < 12; y += 11)
-                    for (int x = 0; x < 12; x++)
+                for (int y = 0; y < 13; y += 12)
+                    for (int x = 0; x < 13; x++)
                         SetWater(x, y, board); //0th and last with water
-                for (int y = 1; y < 11; y++)
-                    for (int x = 0; x < 12; x += 11)
+                for (int y = 1; y < 12; y++)
+                    for (int x = 0; x < 13; x += 12)
                         SetWater(x, y, board); //left and right with water
-                for (int y = 1; y < 11; y += 9)
-                    for (int x = 1; x < 11; x += 9)
+                for (int y = 1; y < 12; y += 10)
+                    for (int x = 1; x < 12; x += 10)
                         SetWater(x, y, board); //corners with water
 
-                for (int y = 1; y < 11; y += 9)
-                    for (int x = 2; x < 10; x++)
+                for (int y = 1; y < 12; y += 10)
+                    for (int x = 2; x < 11; x++)
                         SetRandomTile(x, y, rand, tiles, board); //1st and last without corners
 
-                for (int y = 2; y < 10; y++)
-                    for (int x = 2; x < 10; x++)
+                for (int y = 2; y < 11; y++)
+                    for (int x = 2; x < 11; x++)
                         SetRandomTile(x, y, rand, tiles, board); //2,2 -> 9,
 
-                for (int x = 1; x < 11; x += 9)
-                    for (int y = 2; y < 10; y++)
+                for (int x = 1; x < 12; x += 10)
+                    for (int y = 2; y < 11; y++)
                         SetRandomTile(x, y, rand, tiles, board);
 
                 output = board;
@@ -233,8 +233,8 @@ namespace Jackal
 
             void MakeAllBoardOpen(Tile[,] board)
             {
-                for (int y = 0; y < 12; y++)
-                    for (int x = 0; x < 12; x++)
+                for (int y = 0; y < 13; y++)
+                    for (int x = 0; x < 13; x++)
                         board[x, y].opened = true;
             }
             static void SetRandomTile(int x, int y, Random rand, List<Tile> tiles, Tile[,] board)
@@ -311,11 +311,11 @@ namespace Jackal
 
             public BitmapImage[,] GetBitmapImages() // returns two-dimensional array of images for tiles at the board
             {
-                var imgs = new BitmapImage[12, 12];
+                var imgs = new BitmapImage[13, 13];
 
-                for (int y = 0; y < 12; y++)
+                for (int y = 0; y < 13; y++)
                 {
-                    for (int x = 0; x < 12; x++)
+                    for (int x = 0; x < 13; x++)
                     {
                         var currentTile = output[x, y];
                         // if image is null, return empty by default
