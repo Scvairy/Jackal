@@ -8,21 +8,18 @@ namespace Jackal
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int w = 100, h = 100;
+        public int w = 50, h = 500;
         public MainWindow()
         {
             SizeToContent = SizeToContent.WidthAndHeight; // fits window size to content size
             InitializeComponent();
-            App.Board Board = new App.Board();
-            
-            var o = App.Board.output;
-
+            Board Board = new Board();
+                        
             DrawTiles(Board); // Draw all tiles on grid. To draw current state of board, simply call this method
 
-           
         }
 
-        void DrawTiles(App.Board board) // draws all tiles of given board on grid. To draw current state of board, simply call this method
+        void DrawTiles(Board board) // draws all tiles of given board on grid. To draw current state of board, simply call this method
         {
             var tileImages = board.GetBitmapImages();
 
