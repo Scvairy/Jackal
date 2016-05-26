@@ -6,38 +6,6 @@
         xmlns:local="clr-namespace:Jackal"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Viewbox>
-        <Grid x:Name="grid">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding w}" />
-                <ColumnDefinition Width="{Binding w}" />
-                <ColumnDefinition Width="{Binding w}" />
-                <ColumnDefinition Width="{Binding w}" />
-                <ColumnDefinition Width="{Binding w}" />
-                <ColumnDefinition Width="{Binding w}" />
-                <ColumnDefinition Width="{Binding w}" />
-                <ColumnDefinition Width="{Binding w}" />
-                <ColumnDefinition Width="{Binding w}" />
-                <ColumnDefinition Width="{Binding w}" />
-                <ColumnDefinition Width="{Binding w}" />
-                <ColumnDefinition Width="{Binding w}" />
-                <ColumnDefinition Width="{Binding w}" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="{Binding h}" />
-                <RowDefinition Height="{Binding h}" />
-                <RowDefinition Height="{Binding h}" />
-                <RowDefinition Height="{Binding h}" />
-                <RowDefinition Height="{Binding h}" />
-                <RowDefinition Height="{Binding h}" />
-                <RowDefinition Height="{Binding h}" />
-                <RowDefinition Height="{Binding h}" />
-                <RowDefinition Height="{Binding h}" />
-                <RowDefinition Height="{Binding h}" />
-                <RowDefinition Height="{Binding h}" />
-                <RowDefinition Height="{Binding h}" />
-                <RowDefinition Height="{Binding h}" />
-            </Grid.RowDefinitions>
-        </Grid>
-    </Viewbox>
+    <local:BoardAppearance HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
 </Window>
