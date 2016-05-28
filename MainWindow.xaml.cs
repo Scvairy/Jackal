@@ -13,6 +13,13 @@ namespace Jackal
             InitializeComponent();
         }
 
+        private void tg_selected_click(object sender, RoutedEventArgs e)
+        {
+            int x = int.Parse(tbx.Text); int y = int.Parse(tby.Text);
+            var n = y * 13 + x;
+            BA.Brd.TilesColl[n].Opened = !BA.Brd.TilesColl[n].Opened;
+        }
+
         private void toggle_click(object sender, RoutedEventArgs e)
         {
             for (int x = 0; x < BA.Brd.TilesColl.Count; x++)

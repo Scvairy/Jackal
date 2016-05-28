@@ -63,7 +63,7 @@
                         <Condition Binding="{Binding Opened}" Value="false"/>
                     </MultiDataTrigger.Conditions>
                     <MultiDataTrigger.Setters>
-                        <Setter Property="Source" Value="pack://application:,,,/tiles/closed.png" />
+                        <Setter Property="Source" Value="tiles/closed.png" />
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
                                 <RotateTransform Angle="0" />
@@ -76,7 +76,7 @@
                         <Condition Binding="{Binding Type}" Value="{x:Static local:TileType.water}"/>
                     </MultiDataTrigger.Conditions>
                     <MultiDataTrigger.Setters>
-                        <Setter Property="Source" Value="pack://application:,,,/tiles/water.png" />
+                        <Setter Property="Source" Value="tiles/water.png" />
                     </MultiDataTrigger.Setters>
                 </MultiDataTrigger>
             </Style.Triggers>

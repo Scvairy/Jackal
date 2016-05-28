@@ -11,10 +11,7 @@ namespace Jackal
     {
         public Tile[,] boardArray { get; set; }
         public ObservableCollection<Tile> TilesColl = new ObservableCollection<Tile>();
-        public static void AddWater(int x, int y, ObservableCollection<Tile> tiles)
-        {
-            tiles.Add(new Tile(TileType.water, x, y));
-        }
+       
         public Board()
         {
             var tiles = GenerateAllTiles();
@@ -52,9 +49,9 @@ namespace Jackal
             for (int x = 1; x < 12; x += 10)
                 for (int y = 2; y < 11; y++)
                     SetRandomTile(x, y, rand, tiles, boardArray);
-                    
-            for (int x = 0; x < 13; x++)
-                for (int y = 0; y < 13; y++)
+
+            for (int y = 0; y < 13; y++)
+                for (int x = 0; x < 13; x++)
                 {
                     var tmp = boardArray[x, y];
                     tmp.Pos = new Point(x, y);
@@ -62,11 +59,9 @@ namespace Jackal
                 }
         }
 
-        static public void MakeAllBoardOpen(Tile[,] boardArray)
+        public static void AddWater(int x, int y, ObservableCollection<Tile> tiles)
         {
-            for (int y = 0; y < 13; y++)
-                for (int x = 0; x < 13; x++)
-                    boardArray[x, y].Opened = true;
+            tiles.Add(new Tile(TileType.water, x, y));
         }
         static void SetRandomTile(int x, int y, Random rand, List<Tile> tiles, Tile[,] board)
         {
