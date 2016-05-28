@@ -17,10 +17,7 @@
                 <Button Margin="5" Width="100" Height="30" Content="Повер. против" Click="counterclockwise_click" />
             </StackPanel>
             <StackPanel>
-                <Slider Name="sldr" Width="100" ValueChanged="sldr_ValueChanged">
-                    <Slider.Minimum>0</Slider.Minimum>
-                    <Slider.Maximum>360</Slider.Maximum>
-                </Slider>
+                
             </StackPanel>
         </StackPanel>
     </Grid>

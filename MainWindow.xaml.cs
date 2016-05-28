@@ -29,11 +29,5 @@ namespace Jackal
             for (int x = 0; x < BA.Brd.TilesColl.Count; x++)
                 BA.Brd.TilesColl[x].Direction = (TileDirection)(((int)BA.Brd.TilesColl[x].Direction + 270) % 360);
         }
-
-        private void sldr_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            for(int x = 0; x < BA.Brd.TilesColl.Count; x++)
-            BA.Brd.TilesColl[x].Direction = (TileDirection)e.NewValue;
-        }
     }
 }
