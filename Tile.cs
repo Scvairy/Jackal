@@ -69,7 +69,6 @@ namespace Jackal
 
         public Tile(TileType type, int x = 0, int y = 0, bool opened = false, TileDirection direction = TileDirection.up, short gold = 0, Team team = Team.none, bool pirate1 = false, bool pirate2 = false, bool pirate3 = false)
         {
-            Random r = new Random();
 
             this.Pos = new Point(x, y);
             this.Type = type;
@@ -130,12 +129,29 @@ namespace Jackal
                     ImageUri = new Uri("./tiles/coins-1.png", UriKind.Relative);
                     break;
 
+                case (TileType.coins2):
+                    ImageUri = new Uri("./tiles/coins-2.png", UriKind.Relative);
+                    break;
+
+                case (TileType.coins3):
+                    ImageUri = new Uri("./tiles/coins-3.png", UriKind.Relative);
+                    break;
+
+                case (TileType.coins4):
+                    ImageUri = new Uri("./tiles/coins-4.png", UriKind.Relative);
+                    break;
+
+                case (TileType.coins5):
+                    ImageUri = new Uri("./tiles/coins-5.png", UriKind.Relative);
+                    break;
+
                 case (TileType.balloon):
                     ImageUri = new Uri("./tiles/balloon.png", UriKind.Relative);
                     break;
 
                 case (TileType.cannon):
                     ImageUri = new Uri("./tiles/gun.png", UriKind.Relative);
+                    Direction = (TileDirection)((Board.rand.Next() % 4) * 90);
                     break;
 
                 case (TileType.water):
@@ -144,37 +160,37 @@ namespace Jackal
 
                 case (TileType.astr1):
                     ImageUri = new Uri("./tiles/arrow-1.png", UriKind.Relative);
-                    Direction = (TileDirection)((r.Next() % 4) * 90);
+                    Direction = (TileDirection)((Board.rand.Next() % 4) * 90);
                     break;
 
                 case (TileType.adiag1):
                     ImageUri = new Uri("./tiles/arrow-2.png", UriKind.Relative);
-                    Direction = (TileDirection)((r.Next() % 4) * 90);
+                    Direction = (TileDirection)((Board.rand.Next() % 4) * 90);
                     break;
 
                 case (TileType.adiag2):
                     ImageUri = new Uri("./tiles/arrow-4.png", UriKind.Relative);
-                    Direction = (TileDirection)((r.Next() % 4) * 90);
+                    Direction = (TileDirection)((Board.rand.Next() % 4) * 90);
                     break;
 
                 case (TileType.astr2):
                     ImageUri = new Uri("./tiles/arrow-3.png", UriKind.Relative);
-                    Direction = (TileDirection)((r.Next() % 4) * 90);
+                    Direction = (TileDirection)((Board.rand.Next() % 4) * 90);
                     break;
 
                 case (TileType.a3):
                     ImageUri = new Uri("./tiles/arrow-5.png", UriKind.Relative);
-                    Direction = (TileDirection)((r.Next() % 4) * 90);
+                    Direction = (TileDirection)((Board.rand.Next() % 4) * 90);
                     break;
 
                 case (TileType.astr4):
                     ImageUri = new Uri("./tiles/arrow-6.png", UriKind.Relative);
-                    Direction = (TileDirection)((r.Next() % 4) * 90);
+                    Direction = (TileDirection)((Board.rand.Next() % 4) * 90);
                     break;
 
                 case (TileType.adiag4):
                     ImageUri = new Uri("./tiles/arrow-7.png", UriKind.Relative);
-                    Direction = (TileDirection)((r.Next() % 4) * 90);
+                    Direction = (TileDirection)((Board.rand.Next() % 4) * 90);
                     break;
 
                 case (TileType.lab2):

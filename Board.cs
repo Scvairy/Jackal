@@ -11,6 +11,7 @@ namespace Jackal
     {
         public Tile[,] boardArray { get; set; }
         public ObservableCollection<Tile> TilesColl = new ObservableCollection<Tile>();
+        public static Random rand = new Random();
        
         public Board()
         {
@@ -22,8 +23,7 @@ namespace Jackal
             }
             
                     //SetWater(x, y, boardArray); //0th and last with water
-
-            Random rand = new Random();
+                    
             
             /*Tile[,]*/
             boardArray = new Tile[13, 13];
@@ -40,15 +40,15 @@ namespace Jackal
 
             for (int y = 1; y < 12; y += 10)
                 for (int x = 2; x < 11; x++)
-                    SetRandomTile(x, y, rand, tiles, boardArray); //1st and last without corners
+                    SetRandomTile(x, y, tiles, boardArray); //1st and last without corners
 
             for (int y = 2; y < 11; y++)
                 for (int x = 2; x < 11; x++)
-                    SetRandomTile(x, y, rand, tiles, boardArray); //2,2 -> 9,
+                    SetRandomTile(x, y, tiles, boardArray); //2,2 -> 9,
 
             for (int x = 1; x < 12; x += 10)
                 for (int y = 2; y < 11; y++)
-                    SetRandomTile(x, y, rand, tiles, boardArray);
+                    SetRandomTile(x, y, tiles, boardArray);
 
             for (int y = 0; y < 13; y++)
                 for (int x = 0; x < 13; x++)
@@ -59,11 +59,7 @@ namespace Jackal
                 }
         }
 
-        public static void AddWater(int x, int y, ObservableCollection<Tile> tiles)
-        {
-            tiles.Add(new Tile(TileType.water, x, y));
-        }
-        static void SetRandomTile(int x, int y, Random rand, List<Tile> tiles, Tile[,] board)
+        static void SetRandomTile(int x, int y, List<Tile> tiles, Tile[,] board)
         {
             int r = rand.Next() % (tiles.Count);
             board[x, y] = tiles[r];

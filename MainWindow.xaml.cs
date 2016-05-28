@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Jackal
@@ -11,6 +12,7 @@ namespace Jackal
         public MainWindow()
         {
             InitializeComponent();
+            Random rnd = new Random();
         }
 
         private void tg_selected_click(object sender, RoutedEventArgs e)
