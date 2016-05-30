@@ -33,8 +33,8 @@ namespace Jackal
             get { return this._Gold; }
             set { this._Gold = value; RaisePropertyChanged(() => this.Gold); }
         }
-        private Team _Team;
-        public Team Team
+        private Player _Team;
+        public Player Team
         {
             get { return this._Team; }
             set { this._Team = value; RaisePropertyChanged(() => this.Team); }
@@ -67,7 +67,7 @@ namespace Jackal
         }
 
 
-        public Tile(TileType type, int x = 0, int y = 0, bool opened = false, TileDirection direction = TileDirection.up, short gold = 0, Team team = Team.none, bool pirate1 = false, bool pirate2 = false, bool pirate3 = false)
+        public Tile(TileType type, int x = 0, int y = 0, bool opened = false, TileDirection direction = TileDirection.up, short gold = 0, Player team = Player.none, bool pirate1 = false, bool pirate2 = false, bool pirate3 = false)
         {
 
             this.Pos = new Point(x, y);

@@ -99,6 +99,9 @@
     </ApplicationDefinition>
     <Compile Include="enums.cs" />
     <Compile Include="Pirate.cs" />
+    <Compile Include="PlayerPanel.xaml.cs">
+      <DependentUpon>PlayerPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Ship.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -122,6 +125,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PlayerPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

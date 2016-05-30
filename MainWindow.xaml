@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Jackal"
         mc:Ignorable="d"
-        Title="Jackal The Boardgame" Height="350" Width="525" SizeToContent="WidthAndHeight">
+        Title="Jackal The Boardgame" Height="600" Width="577" SizeToContent="WidthAndHeight">
     <Grid>
     <local:BoardAppearance x:Name="BA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <StackPanel Orientation="Horizontal">

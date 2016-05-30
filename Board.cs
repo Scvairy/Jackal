@@ -11,8 +11,9 @@ namespace Jackal
     {
         public Tile[,] boardArray { get; set; }
         public ObservableCollection<Tile> TilesColl = new ObservableCollection<Tile>();
+        public ObservableCollection<Pirate> PiratesColl = new ObservableCollection<Pirate>();
         public static Random rand = new Random();
-       
+
         public Board()
         {
             var tiles = GenerateAllTiles();
@@ -21,13 +22,9 @@ namespace Jackal
                 MessageBox.Show("Количество тайлов не совпадает");
                 return;
             }
-            
-                    //SetWater(x, y, boardArray); //0th and last with water
-                    
-            
-            /*Tile[,]*/
+
             boardArray = new Tile[13, 13];
-            
+
             for (int y = 0; y < 13; y += 12)
                 for (int x = 0; x < 13; x++)
                     SetWater(x, y, boardArray); //0th and last with water
@@ -57,6 +54,9 @@ namespace Jackal
                     tmp.Pos = new Point(x, y);
                     TilesColl.Add(tmp);
                 }
+
+            PiratesColl.Add(new Pirate(PirateId.first, Player.red, 7, 7));
+
         }
 
         static void SetRandomTile(int x, int y, List<Tile> tiles, Tile[,] board)

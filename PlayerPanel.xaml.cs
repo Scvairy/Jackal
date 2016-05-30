@@ -16,19 +16,13 @@ using System.Windows.Shapes;
 namespace Jackal
 {
     /// <summary>
-    /// Логика взаимодействия для BoardAppearance.xaml
+    /// Логика взаимодействия для PlayerPanel.xaml
     /// </summary>
-    public partial class BoardAppearance : UserControl
+    public partial class PlayerPanel : UserControl
     {
-        public Board Brd;
-        public BoardAppearance()
+        public PlayerPanel()
         {
             InitializeComponent();
-            Brd = new Board();
-            
-            GameBoard.ItemsSource = Brd.TilesColl;
-            PiratesBoard.ItemsSource = Brd.PiratesColl;
         }
-
     }
 }
