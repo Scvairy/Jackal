@@ -102,7 +102,6 @@
     <Compile Include="PlayerPanel.xaml.cs">
       <DependentUpon>PlayerPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Ship.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

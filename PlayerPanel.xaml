@@ -5,8 +5,29 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Jackal"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="150" d:DesignWidth="400">
     <Grid>
+        <Grid HorizontalAlignment="Right" Margin="15" Height="90" Width="90">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
             
+            <Button Name="ul" Content="↖" Grid.Row="0" Grid.Column="0" Click="ul_Click" />
+            <Button Name="u" Content="↑" Grid.Row="0" Grid.Column="1" Click="u_Click"/>
+            <Button Name="ur" Content="↗" Grid.Row="0" Grid.Column="2" Click="ur_Click"/>
+            <Button Name="l" Content="←" Grid.Row="1" Grid.Column="0" Click="l_Click"/>
+            <Button IsEnabled="False" Name="coin" Content="М" Grid.Row="1" Grid.Column="1" Click="coin_Click"/>
+            <Button Name="r" Content="→" Grid.Row="1" Grid.Column="2" Click="r_Click"/>
+            <Button Name="dl" Content="↙" Grid.Row="2" Grid.Column="0" Click="dl_Click"/>
+            <Button Name="d" Content="↓" Grid.Row="2" Grid.Column="1" Click="d_Click"/>
+            <Button Name="dr" Content="↘" Grid.Row="2" Grid.Column="2" Click="dr_Click"/>
+        </Grid>
     </Grid>
 </UserControl>

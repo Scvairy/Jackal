@@ -5,6 +5,7 @@ using System.Windows;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace Jackal
 {
@@ -45,14 +46,39 @@ namespace Jackal
             set { this._Dead = value; RaisePropertyChanged(() => this.Dead); }
         }
 
-        public Pirate(PirateId id, Player team, int x, int y)
+        private bool[,] _Able = new bool[3, 3];
+        public bool[,] Able
+        {
+            get { return this._Able; }
+            set { this._Able = value; RaisePropertyChanged(() => this.Able); }
+        }
+
+        private bool _InSea;
+        public bool InSea
+        {
+            get { return this._InSea; }
+            set { this._InSea = value; RaisePropertyChanged(() => this.InSea); }
+        }
+
+        private bool _Drunk;
+        public bool Drunk
+        {
+            get { return this._Drunk; }
+            set { this._Drunk = value; RaisePropertyChanged(() => this.Drunk); }
+        };
+
+        public Pirate(PirateId id, Player team, int x, int y, bool inSea = false, bool drunk = false)
         {
             Id = id;
             Team = team;
-            Pos = new Point(x,y);
+            Pos = new Point(x, y);
             Gold = false;
             Dead = false;
+            InSea = inSea;
+            Drunk = drunk;
+            for (int j = 0; y < 3; y++)
+                for (int i = 0; x < 3; x++)
+                    Able[i, j] = true;
         }
-        
     }
 }

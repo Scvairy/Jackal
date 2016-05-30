@@ -106,6 +106,42 @@
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:TileType.ship}"/>
+                        <Condition Binding="{Binding Team}" Value="{x:Static local:Player.white}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Source" Value="tiles/ship-1.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:TileType.ship}"/>
+                        <Condition Binding="{Binding Team}" Value="{x:Static local:Player.red}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Source" Value="tiles/ship-2.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:TileType.ship}"/>
+                        <Condition Binding="{Binding Team}" Value="{x:Static local:Player.black}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Source" Value="tiles/ship-3.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:TileType.ship}"/>
+                        <Condition Binding="{Binding Team}" Value="{x:Static local:Player.yellow}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Source" Value="tiles/ship-4.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
                         <Condition Binding="{Binding Type}" Value="{x:Static local:TileType.water}"/>
                     </MultiDataTrigger.Conditions>
                     <MultiDataTrigger.Setters>
@@ -115,58 +151,64 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <Viewbox>
-        <Grid>
-            <ItemsControl Name="GameBoard">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas Width="13" Height="13" Background="Gray"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Width="1" Height="1">
-                            <Image Width="0.99" 
+
+    <Grid>
+        <Viewbox>
+            <Grid>
+                <ItemsControl Name="GameBoard">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Width="13" Height="13" Background="Gray"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="1" Height="1">
+                                <Image Width="0.99" 
                                Height="0.99" 
                                RenderTransformOrigin=".5,.5"
                                Style="{StaticResource TileStyle}">
-                                <!--
+                                    <!--
                             <i:Interaction.Behaviors>
                                 <ei:MouseDragElementBehavior/>
                             </i:Interaction.Behaviors>-->
-                            </Image>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemContainerStyle>
-                    <Style>
-                        <Setter Property="Canvas.Left" Value="{Binding Pos.X}" />
-                        <Setter Property="Canvas.Top" Value="{Binding Pos.Y}" />
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-            </ItemsControl>
-            <ItemsControl Name="PiratesBoard">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas Width="13" Height="13" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Width="1" Height="1">
-                            <Ellipse Width="0.3"
+                                </Image>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="Canvas.Left" Value="{Binding Pos.X}" />
+                            <Setter Property="Canvas.Top" Value="{Binding Pos.Y}" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+                <ItemsControl Name="PiratesBoard">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Width="13" Height="13" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="1" Height="1">
+                                <Ellipse Width="0.3"
                                    Height="0.3"
                                    Style="{StaticResource PirateStyle}" />
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemContainerStyle>
-                    <Style>
-                        <Setter Property="Canvas.Left" Value="{Binding Pos.X}" />
-                        <Setter Property="Canvas.Top" Value="{Binding Pos.Y}" />
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-            </ItemsControl>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="Canvas.Left" Value="{Binding Pos.X}" />
+                            <Setter Property="Canvas.Top" Value="{Binding Pos.Y}" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+            </Grid>
+        </Viewbox>
+        <Grid>
+            <local:PlayerPanel x:Name="PP" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
         </Grid>
-    </Viewbox>
+    </Grid>
 </UserControl>

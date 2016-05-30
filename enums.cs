@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Jackal
 {
-    public enum Player { none, red, black, yellow, white }
+    public enum Player { none, white, red, black, yellow }
 
     public enum PirateId { first, second, third }
 
@@ -14,8 +14,9 @@ namespace Jackal
     {
         water, grass1, grass2, grass3, grass4, astr1, adiag1, adiag2, astr2, a3,
         astr4, adiag4, rum, lab2, lab3, lab4, lab5, ice, hole, croc,
-        cannibal, fort, gfort, coins1, coins2, coins3, coins4, coins5, balloon, cannon, horse, plane
+        cannibal, fort, gfort, coins1, coins2, coins3, coins4, coins5, balloon, cannon, horse, plane, ship
     }
 
-    public enum TileDirection { up = 0, left = 90, right = 270, down = 180 }
+    public enum TileDirection { up = 0, left = 270, right = 90, down = 180 }
+
 }

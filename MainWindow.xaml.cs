@@ -18,7 +18,7 @@ namespace Jackal
         private void tg_selected_click(object sender, RoutedEventArgs e)
         {
             int x = int.Parse(tbx.Text); int y = int.Parse(tby.Text);
-            var n = y * 13 + x;
+            var n = Board.GetIndex(x,y);
             BA.Brd.TilesColl[n].Opened = !BA.Brd.TilesColl[n].Opened;
         }
 

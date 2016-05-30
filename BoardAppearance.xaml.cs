@@ -25,7 +25,12 @@ namespace Jackal
         {
             InitializeComponent();
             Brd = new Board();
-            
+
+            PP.PiratesColl = Brd.PiratesColl;
+            PP.Brd = Brd;
+            PP.P = Brd.PiratesColl[0];
+            PP.SetAbility();
+
             GameBoard.ItemsSource = Brd.TilesColl;
             PiratesBoard.ItemsSource = Brd.PiratesColl;
         }
