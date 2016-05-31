@@ -7,7 +7,19 @@
         mc:Ignorable="d"
         Title="Jackal The Boardgame" Height="600" Width="577" SizeToContent="WidthAndHeight">
     <Grid>
-    <local:BoardAppearance x:Name="BA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Grid.Background>
+            <ImageBrush TileMode="Tile" ImageSource="tiles/water.png">
+                <ImageBrush.RelativeTransform>
+                    <TransformGroup>
+                        <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleY="0.1" ScaleX="0.1"/>
+                        <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                        <RotateTransform CenterY="0.5" CenterX="0.5"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </ImageBrush.RelativeTransform>
+            </ImageBrush>
+        </Grid.Background>
+        <local:BoardAppearance x:Name="BA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <StackPanel Orientation="Horizontal">
             <StackPanel>
                 <Button Margin="5" Width="100" Height="30" Content="Открыть все" Click="toggle_click" />
