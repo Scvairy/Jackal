@@ -115,8 +115,7 @@ namespace Jackal
                     case (TileType.ship):
                         if (IsEnemyShip(TilesColl[to], pir))
                         {
-                            pir.Alive = false;
-                            pir.Pos = new Point(-1, -1);
+                            Kill(pir);
                             break;
                         }
                         else
@@ -136,6 +135,39 @@ namespace Jackal
             }
             Open(newpos);
             pir.Pos = newpos;
+            return 0;
+        }
+
+        public int Swim(Point pTo, Pirate pir)
+        {
+            if (pTo.X < 0 || pTo.Y < 0 || pTo.X > 12 || pTo.Y > 12)
+                return -1; //выход за пределы диапазона поля
+            var pFrom = pir.Pos;
+            var from = GetIndex(pFrom);
+            var to = GetIndex(pTo);
+            var fromTile = TilesColl[from];
+            var toTile = TilesColl[to];
+            Point newpos = new Point();
+            Open(pTo);
+            switch (toTile.Type)
+            {
+                case (TileType.water):
+                    newpos = pTo;
+                    break;
+                case (TileType.ship):
+                    if (toTile.Team == pir.Team)
+                        newpos = pTo;
+                    else
+                    {
+                        Kill(pir);
+                    }
+
+                default:
+                    newpos = pFrom;
+                    break;
+            }
+            pir.Pos = newpos;
+            UpdateAble(pir);
             return 0;
         }
 
@@ -163,6 +195,8 @@ namespace Jackal
                     case (TileType.adiag4):
                     case (TileType.a3):
                         return ForceMove(pTo, pir);
+                    case (TileType.water):
+                        return Swim(pTo, pir);
                 }
                 Open(pTo);
                 switch (toTile.Type)
@@ -225,6 +259,11 @@ namespace Jackal
             }
         }
 
+        public void Kill(Pirate pir)
+        {
+            pir.Alive = false;
+            pir.Pos = new Point(-1, -1);
+        }
 
         public void UpdateAble(Pirate pir)
         {
