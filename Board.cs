@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
+using System.Linq;
 
 namespace Jackal
 {
@@ -13,7 +14,7 @@ namespace Jackal
         public ObservableCollection<Tile> TilesColl = new ObservableCollection<Tile>();
         public ObservableCollection<Pirate> PiratesColl = new ObservableCollection<Pirate> {
 
-            new Pirate(PirateId.first, Player.black, 6, 0),
+            new Pirate(PirateId.first, Player.black, 6, 0, true),
             new Pirate(PirateId.second, Player.black, 6, 0),
             new Pirate(PirateId.third, Player.black, 6, 0),
 
@@ -158,6 +159,7 @@ namespace Jackal
                     {
                         Kill(pir);
                     }
+                    break;
 
                 default:
                     newpos = pFrom;
@@ -179,7 +181,8 @@ namespace Jackal
             var toTile = TilesColl[to];
             Point newpos = new Point();
 
-            if (pir.Drunk)
+            bool drink = false;
+            if (pir.Drunkc > 0)
                 return -2; //пират пьян
             else {
                 switch (fromTile.Type)
@@ -191,9 +194,9 @@ namespace Jackal
                     case (TileType.adiag2):
                     case (TileType.adiag4):
                     case (TileType.a3):
-                        return ForceMove(pTo, pir);
+                        return FinishStep(ForceMove(pTo, pir), pir);
                     case (TileType.water):
-                        return Swim(pTo, pir);
+                        return FinishStep(Swim(pTo, pir), pir);
                 }
                 Open(pTo);
                 switch (toTile.Type)
@@ -232,7 +235,7 @@ namespace Jackal
                                 break;
                         }
                         pir.Pos = newpos;
-                        return 0;
+                        return FinishStep(0, pir);
 
 
                     case (TileType.croc):
@@ -241,8 +244,12 @@ namespace Jackal
                         break;
 
                     case (TileType.rum):
-                        pir.Drunk = true;
+                        drink = true;
                         newpos = pTo;
+                        break;
+
+                    case (TileType.balloon):
+                        newpos = GetShip(pir.Team);
                         break;
 
                     default:
@@ -252,8 +259,25 @@ namespace Jackal
                 Open(newpos);
                 pir.Pos = newpos;
                 UpdateAble(pir);
-                return 0;
+                return FinishStep(0, pir, drink);
             }
+        }
+        public Point GetShip(Player team)
+        {
+            var tile = TilesColl.Where(X => X.Team == team).FirstOrDefault();
+            if (tile == null) return new Point();
+            else return tile.Pos;
+        }
+        public int FinishStep(int result, Pirate pir, bool drink = false)
+        {
+            for (int i = (int)pir.Team * 3; i < (int)pir.Team * 3 + 3; i++)
+            {
+                Pirate p = PiratesColl[i];
+                if (p.Drunkc > 0)
+                    p.Drunkc -= 1;
+            }
+            if (drink) pir.Drunkc++;
+            return result;
         }
 
         public void Kill(Pirate pir)
