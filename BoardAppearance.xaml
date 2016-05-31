@@ -27,7 +27,7 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
-                                <RotateTransform Angle="-90" />
+                                <RotateTransform Angle="90" />
                             </Setter.Value>
                         </Setter>
                     </MultiDataTrigger.Setters>
@@ -39,7 +39,7 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
-                                <RotateTransform Angle="-180" />
+                                <RotateTransform Angle="180" />
                             </Setter.Value>
                         </Setter>
                     </MultiDataTrigger.Setters>
@@ -51,7 +51,7 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
-                                <RotateTransform Angle="-270" />
+                                <RotateTransform Angle="270" />
                             </Setter.Value>
                         </Setter>
                     </MultiDataTrigger.Setters>

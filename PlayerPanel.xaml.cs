@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -180,7 +181,7 @@ namespace Jackal
 
         private void MoveIfPossible(int newx, int newy)
         {
-            var moveResult = Brd.Move(new Point(newx, newy), P);
+            var moveResult = Brd.Move(new System.Drawing.Point(newx, newy), P);
             if (moveResult == 0)
                 NextTurn();
             if (moveResult == -1)

@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
-using System.Windows;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,6 +66,18 @@ namespace Jackal
             get { return this._Selected; }
             set { this._Selected = value; RaisePropertyChanged(() => this.Selected); }
         }
+        private int _Lab;
+        public int Lab
+        {
+            get { return this._Lab; }
+            set { this._Lab = value; RaisePropertyChanged(() => this.Lab); }
+        }
+        private bool _Trapped;
+        public bool Trapped
+        {
+            get { return this._Trapped; }
+            set { this._Trapped = value; RaisePropertyChanged(() => this.Trapped); }
+        }
 
         public Pirate(PirateId id, Player team, int x, int y, bool selected = false, int drunkc = 0)
         {
@@ -74,8 +86,10 @@ namespace Jackal
             Pos = new Point(x, y);
             Gold = false;
             Alive = true;
+            Lab = 0;
             Drunkc = drunkc;
             Selected = selected;
+            Trapped = false;
             for (int j = 0; y < 3; y++)
                 for (int i = 0; x < 3; x++)
                     Able[i, j] = true;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows;
+using System.Drawing;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using System.Linq;
@@ -37,7 +37,7 @@ namespace Jackal
             var tiles = GenerateAllTiles();
             if (tiles.Count != 117)
             {
-                MessageBox.Show("Количество тайлов не совпадает");
+                System.Windows.MessageBox.Show("Количество тайлов не совпадает");
                 return;
             }
 
@@ -91,10 +91,41 @@ namespace Jackal
             return !(tile.Team == pir.Team);
         }
 
-        public Point WhereToGo(Pirate pir)
+        public Point GetShotPos(Point cannon, Pirate pir)
         {
-            
-            return new Point();
+            Point newpos = new Point();
+            int to = GetIndex(cannon);
+            switch (TilesColl[to].Direction)
+            {
+                case (TileDirection.up):
+                    newpos = new Point(cannon.X, 0);
+                    break;
+                case (TileDirection.left):
+                    newpos = new Point(0, cannon.Y);
+                    break;
+                case (TileDirection.down):
+                    newpos = new Point(cannon.X, 12);
+                    break;
+                case (TileDirection.right):
+                    newpos = new Point(12, cannon.Y);
+                    break;
+            }
+            return newpos;
+        }
+
+        public int MoveToShip(Point pTo, Pirate pir)
+        {
+            int to = GetIndex(pTo);
+            if (IsEnemyShip(TilesColl[to], pir))
+            {
+                Kill(pir);
+                return 1; //пират убит
+            }
+            else
+            {
+                pir.Pos = pTo;
+                return 0;
+            }
         }
 
         public int ForceMove(Point pTo, Pirate pir)
@@ -133,6 +164,14 @@ namespace Jackal
                         MoveToShip(pTo, pir);
                         break;
 
+                    case (TileType.balloon):
+                        newpos = GetShipPos(pir.Team);
+                        break;
+
+                    case (TileType.ice):
+                        pir.Pos = pTo;
+                        return ForceMove(pTo + new Size(pTo - new Size(pir.Pos)), pir);
+
                     default:
                         pir.Pos = pTo;
                         return 0;
@@ -146,59 +185,44 @@ namespace Jackal
             pir.Pos = newpos;
             return 0;
         }
-        
-        public Point GetShotPos(Point cannon, Pirate pir)
-        {
-            Point newpos = new Point();
-            int to = GetIndex(cannon);
-            switch (TilesColl[to].Direction)
-            {
-                case (TileDirection.up):
-                    newpos = new Point(cannon.X, 0);
-                    break;
-                case (TileDirection.left):
-                    newpos = new Point(0, cannon.Y);
-                    break;
-                case (TileDirection.down):
-                    newpos = new Point(cannon.X, 12);
-                    break;
-                case (TileDirection.right):
-                    newpos = new Point(12, cannon.Y);
-                    break;
-            }
-            return newpos;
-        }
 
-        public int MoveToShip(Point pTo, Pirate pir)
-        {
-            int to = GetIndex(pTo);
-            if (IsEnemyShip(TilesColl[to], pir))
-            {
-                Kill(pir);
-                return 1; //пират убит
-            }
-            else
-            {
-                pir.Pos = pTo;
-                return 0;
-            }
-        }
-
-        public int Move(Point pTo, Pirate pir)
+        public int Move(Point pTo, Pirate pir, bool arrow = false, bool force = false)
         {
             if (pTo.X < 0 || pTo.Y < 0 || pTo.X > 12 || pTo.Y > 12)
                 return -1; //выход за пределы диапазона поля
+            if (pir.Drunkc > 0)
+                return -2; //пират пьян
+            if (pir.Trapped == true)
+            {
+                var pirates = PiratesColl.Where(X => X.Pos == pir.Pos);
+                if (pirates.Count() > 1)
+                    foreach (Pirate p in pirates)
+                    {
+                        p.Trapped = false;
+                        Move(pTo, p);
+                    }
+                return -4; //пират в ловушке
+            }
+            if (pir.Lab > 0)
+            {
+                pir.Lab--;
+                return FinishStep(1, pir);
+            }
+
             var pFrom = pir.Pos;
             var from = GetIndex(pFrom);
             var to = GetIndex(pTo);
             var fromTile = TilesColl[from];
             var toTile = TilesColl[to];
             Point newpos = new Point();
+            Point dir = new Point(pTo.X - pFrom.X, pTo.Y - pFrom.Y);
+
+            if (arrow && !Tile.IsRightDir(fromTile, dir))
+                return -3; //поворот не туда
 
             bool drink = false;
-            if (pir.Drunkc > 0)
-                return -2; //пират пьян
-            else {
+
+            if (!arrow)
                 switch (fromTile.Type)
                 {
                     case (TileType.astr1):
@@ -208,74 +232,110 @@ namespace Jackal
                     case (TileType.adiag2):
                     case (TileType.adiag4):
                     case (TileType.a3):
-                        return FinishStep(ForceMove(pTo, pir), pir);
-                    case (TileType.water):
-                        return FinishStep(Swim(pTo, pir), pir);
+                        return Move(pTo, pir, true, true);
                 }
-                Open(pTo);
-                switch (toTile.Type)
-                {
-                    case (TileType.water):
-                        newpos = pFrom;
-                        break;
 
-                    case (TileType.grass1):
-                    case (TileType.grass2):
-                    case (TileType.grass3):
-                    case (TileType.grass4):
-                    case (TileType.coins1):
-                    case (TileType.coins2):
-                    case (TileType.coins3):
-                    case (TileType.coins4):
-                    case (TileType.coins5):
-                        newpos = pTo;
-                        break;
+            if (fromTile.Type == TileType.water)
+                return FinishStep(Swim(pTo, pir), pir);
 
-                    case (TileType.cannon):
-                        Open(pTo);
-                        switch (TilesColl[to].Direction)
-                        {
-                            case (TileDirection.up):
-                                newpos = new Point(pTo.X, 0);
-                                break;
-                            case (TileDirection.left):
-                                newpos = new Point(0, pTo.Y);
-                                break;
-                            case (TileDirection.down):
-                                newpos = new Point(pTo.X, 12);
-                                break;
-                            case (TileDirection.right):
-                                newpos = new Point(12, pTo.Y);
-                                break;
-                        }
-                        pir.Pos = newpos;
-                        return FinishStep(0, pir);
+            Open(pTo);
+            switch (toTile.Type)
+            {
+                case (TileType.water):
+                    if (force) newpos = pTo;
+                    else newpos = pFrom;
+                    break;
+                    
+                case (TileType.hole):
+                    pir.Trapped = true;
+                    newpos = pTo;
+                    break;
 
+                case (TileType.lab2):
+                    pir.Lab = 1;
+                    newpos = pTo;
+                    break;
+                case (TileType.lab3):
+                    pir.Lab = 2;
+                    newpos = pTo;
+                    break;
+                case (TileType.lab4):
+                    pir.Lab = 3;
+                    newpos = pTo;
+                    break;
+                case (TileType.lab5):
+                    pir.Lab = 4;
+                    newpos = pTo;
+                    break;
+                    
+                case (TileType.cannibal):
+                    Kill(pir);
+                    break;
 
-                    case (TileType.croc):
-                        newpos = pir.Pos;
-                        pir.Pos = pTo;
-                        break;
+                case (TileType.grass1):
+                case (TileType.grass2):
+                case (TileType.grass3):
+                case (TileType.grass4):
+                case (TileType.coins1):
+                case (TileType.coins2):
+                case (TileType.coins3):
+                case (TileType.coins4):
+                case (TileType.coins5):
+                    newpos = pTo;
+                    break;
 
-                    case (TileType.rum):
-                        drink = true;
-                        newpos = pTo;
-                        break;
+                case (TileType.cannon):
+                    Open(pTo);
+                    switch (TilesColl[to].Direction)
+                    {
+                        case (TileDirection.up):
+                            newpos = new Point(pTo.X, 0);
+                            break;
+                        case (TileDirection.left):
+                            newpos = new Point(0, pTo.Y);
+                            break;
+                        case (TileDirection.down):
+                            newpos = new Point(pTo.X, 12);
+                            break;
+                        case (TileDirection.right):
+                            newpos = new Point(12, pTo.Y);
+                            break;
+                    }
+                    Open(newpos);
+                    pir.Pos = newpos;
+                    return FinishStep(0, pir);
 
-                    case (TileType.balloon):
-                        newpos = GetShipPos(pir.Team);
-                        break;
+                case (TileType.ice):
+                    pir.Pos = pTo;
+                    return Move(pTo + new Size(dir), pir);
 
-                    default:
-                        newpos = pTo;
-                        break;
-                }
-                Open(newpos);
-                pir.Pos = newpos;
-                UpdateAble(pir);
-                return FinishStep(0, pir, drink);
+                case (TileType.croc):
+                    newpos = pir.Pos;
+                    pir.Pos = pTo;
+                    break;
+
+                case (TileType.rum):
+                    drink = true;
+                    newpos = pTo;
+                    break;
+
+                case (TileType.balloon):
+                    newpos = GetShipPos(pir.Team);
+                    break;
+
+                case (TileType.ship):
+                    return FinishStep(MoveToShip(pTo, pir), pir);
+
+                default:
+                    newpos = pTo;
+                    break;
             }
+            Open(newpos);
+            pir.Pos = newpos;
+            UpdateAble(pir);
+            return FinishStep(0, pir, drink);
         }
+
         public int Swim(Point pTo, Pirate pir)
         {
             if (pTo.X < 0 || pTo.Y < 0 || pTo.X > 12 || pTo.Y > 12)
@@ -332,7 +392,7 @@ namespace Jackal
         public void Kill(Pirate pir)
         {
             pir.Alive = false;
-            pir.Pos = new Point(13, 0);
+            pir.Pos = new Point(13, -1);
         }
 
         public void UpdateAble(Pirate pir)

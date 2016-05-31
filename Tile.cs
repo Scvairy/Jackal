@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
+using System.Drawing;
 
 namespace Jackal
 {
@@ -251,6 +251,7 @@ namespace Jackal
 
         static public bool IsRightDir(Tile t, Point dir)
         {
+            if (t.Vectors.Count == 0) return true;
             return t.Vectors.Contains(dir);
         }
 
@@ -292,7 +293,7 @@ namespace Jackal
             for (int i = 0; i < Vectors.Count; i++)
             {
                 var v = Vectors[i];
-                double x = (v.X * cos((int)dir)) - (v.Y * sin((int)dir)),
+                int x = (v.X * cos((int)dir)) - (v.Y * sin((int)dir)),
                        y = (v.X * sin((int)dir)) + (v.Y * cos((int)dir));
                 Vectors[i] = new Point(x, y);
             }
