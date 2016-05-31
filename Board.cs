@@ -219,7 +219,7 @@ namespace Jackal
                         break;
 
                     case (TileType.balloon):
-                        newpos = GetShip(pir.Team);
+                        newpos = GetShipPos(pir.Team);
                         break;
 
                     default:
@@ -265,7 +265,8 @@ namespace Jackal
             UpdateAble(pir);
             return 0;
         }
-        public Point GetShip(Player team)
+
+        public Point GetShipPos(Player team)
         {
             var tile = TilesColl.Where(X => X.Team == team).FirstOrDefault();
             if (tile == null) return new Point();
@@ -273,7 +274,7 @@ namespace Jackal
         }
         public int FinishStep(int result, Pirate pir, bool drink = false)
         {
-            for (int i = (int)pir.Team * 3; i < (int)pir.Team * 3 + 3; i++)
+            for (int i = (int)pir.Team - 1; i < (int)pir.Team - 1 + 3; i++)
             {
                 Pirate p = PiratesColl[i];
                 if (p.Drunkc > 0)

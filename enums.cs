@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Jackal
 {
-    public enum Player { none, white, red, black, yellow }
+    public enum Player { none, black, red, white, yellow }
 
     public enum PirateId { first, second, third }
 
