@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,23 @@ namespace Jackal
             GameBoard.ItemsSource = Brd.TilesColl;
             PiratesBoard.ItemsSource = Brd.PiratesColl;
         }
+    }
+}
+namespace Converters
+{
+    public class CutoffConverter : IValueConverter
+    {
 
+        object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return int.Parse(value.ToString()) > (int)Cutoff;
+        }
+
+        object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Cutoff { get; set; }
     }
 }

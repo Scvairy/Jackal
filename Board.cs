@@ -91,6 +91,12 @@ namespace Jackal
             return !(tile.Team == pir.Team);
         }
 
+        public Point WhereToGo(Pirate pir)
+        {
+            
+            return new Point();
+        }
+
         public int ForceMove(Point pTo, Pirate pir)
         {
             if (pTo.X < 0 || pTo.Y < 0 || pTo.X > 12 || pTo.Y > 12)
@@ -103,8 +109,14 @@ namespace Jackal
             var toTile = TilesColl[to];
             Point newpos = new Point();
             Point dir = new Point(pTo.X - pFrom.X, pTo.Y - pFrom.Y);
+
             if (Tile.IsRightDir(fromTile, dir))
             {
+                if (toTile.Type == TileType.water && fromTile.Vectors.Count == 1)
+                {
+                    Kill(pir);
+                    return 1;
+                }
                 Open(pTo);
                 switch (toTile.Type)
                 {
@@ -113,22 +125,18 @@ namespace Jackal
                         newpos = pTo;
                         return 0;
 
+                    case (TileType.cannon):
+                        pir.Pos = pTo;
+                        newpos = GetShotPos(pTo, pir);
+                        return ForceMove(newpos, pir);
+
                     case (TileType.ship):
-                        if (IsEnemyShip(TilesColl[to], pir))
-                        {
-                            Kill(pir);
-                            break;
-                        }
-                        else
-                        {
-                            newpos = pTo;
-                            break;
-                        }
+                        MoveToShip(pTo, pir);
+                        break;
 
                     default:
                         pir.Pos = pTo;
-                        Move(pTo, pir);
-                        break;
+                        return 0;
                 }
             }
             else
@@ -138,6 +146,43 @@ namespace Jackal
             Open(newpos);
             pir.Pos = newpos;
             return 0;
+        }
+        
+        public Point GetShotPos(Point cannon, Pirate pir)
+        {
+            Point newpos = new Point();
+            int to = GetIndex(cannon);
+            switch (TilesColl[to].Direction)
+            {
+                case (TileDirection.up):
+                    newpos = new Point(cannon.X, 0);
+                    break;
+                case (TileDirection.left):
+                    newpos = new Point(0, cannon.Y);
+                    break;
+                case (TileDirection.down):
+                    newpos = new Point(cannon.X, 12);
+                    break;
+                case (TileDirection.right):
+                    newpos = new Point(12, cannon.Y);
+                    break;
+            }
+            return newpos;
+        }
+
+        public int MoveToShip(Point pTo, Pirate pir)
+        {
+            int to = GetIndex(pTo);
+            if (IsEnemyShip(TilesColl[to], pir))
+            {
+                Kill(pir);
+                return 1; //пират убит
+            }
+            else
+            {
+                pir.Pos = pTo;
+                return 0;
+            }
         }
 
         public int Move(Point pTo, Pirate pir)
@@ -272,6 +317,7 @@ namespace Jackal
             if (tile == null) return new Point();
             else return tile.Pos;
         }
+
         public int FinishStep(int result, Pirate pir, bool drink = false)
         {
             for (int i = (int)pir.Team - 1; i < (int)pir.Team - 1 + 3; i++)

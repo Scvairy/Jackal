@@ -6,6 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Jackal"
+             xmlns:myns="clr-namespace:Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -169,6 +170,8 @@
                 </MultiDataTrigger>
             </Style.Triggers>
         </Style>
+
+        <myns:CutoffConverter x:Key="GoldConverter" Cutoff="0" />
     </UserControl.Resources>
 
     <Grid>
@@ -188,7 +191,45 @@
                                RenderTransformOrigin=".5,.5"
                                Style="{StaticResource TileStyle}">
                                 </Image>
+                                <Grid x:Name="gg" VerticalAlignment="Bottom"
+                                      HorizontalAlignment="Right">
+                                    <Ellipse 
+                                         Fill="Gold" 
+                                         Width=".4"
+                                         Height=".4"
+                                         VerticalAlignment="Center" 
+                                         HorizontalAlignment="Center"/>
+                                    <TextBlock x:Name="tb" 
+                                           FontSize=".3" 
+                                           Margin=".05"
+                                           Foreground="#FF5B4304" 
+                                           VerticalAlignment="Center" 
+                                           HorizontalAlignment="Center"/>
+
+                                </Grid>
                             </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Path=Gold, Converter={StaticResource GoldConverter}}" Value="true">
+                                    <Setter TargetName="gg" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="tb" Property="Text" Value="{Binding Gold}" />
+                                </DataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Gold, Converter={StaticResource GoldConverter}}" Value="false" />
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter TargetName="gg" Property="Visibility" Value="Hidden" />
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Opened}" Value="false" />
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter TargetName="gg" Property="Visibility" Value="Hidden" />
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                            </DataTemplate.Triggers>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.ItemContainerStyle>
