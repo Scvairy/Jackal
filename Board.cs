@@ -128,64 +128,6 @@ namespace Jackal
             }
         }
 
-        public int ForceMove(Point pTo, Pirate pir)
-        {
-            if (pTo.X < 0 || pTo.Y < 0 || pTo.X > 12 || pTo.Y > 12)
-                return -1; //выход за пределы диапазона поля
-
-            var pFrom = pir.Pos;
-            var from = GetIndex(pFrom);
-            var to = GetIndex(pTo);
-            var fromTile = TilesColl[from];
-            var toTile = TilesColl[to];
-            Point newpos = new Point();
-            Point dir = new Point(pTo.X - pFrom.X, pTo.Y - pFrom.Y);
-
-            if (Tile.IsRightDir(fromTile, dir))
-            {
-                if (toTile.Type == TileType.water && fromTile.Vectors.Count == 1)
-                {
-                    Kill(pir);
-                    return 1;
-                }
-                Open(pTo);
-                switch (toTile.Type)
-                {
-                    case (TileType.water):
-                        newpos = pTo;
-                        return 0;
-
-                    case (TileType.cannon):
-                        pir.Pos = pTo;
-                        newpos = GetShotPos(pTo, pir);
-                        return ForceMove(newpos, pir);
-
-                    case (TileType.ship):
-                        MoveToShip(pTo, pir);
-                        break;
-
-                    case (TileType.balloon):
-                        newpos = GetShipPos(pir.Team);
-                        break;
-
-                    case (TileType.ice):
-                        pir.Pos = pTo;
-                        return ForceMove(pTo + new Size(pTo - new Size(pir.Pos)), pir);
-
-                    default:
-                        pir.Pos = pTo;
-                        return 0;
-                }
-            }
-            else
-            {
-                return -3; //поворот не туда
-            }
-            Open(newpos);
-            pir.Pos = newpos;
-            return 0;
-        }
-
         public int Move(Point pTo, Pirate pir, bool arrow = false, bool force = false)
         {
             if (pTo.X < 0 || pTo.Y < 0 || pTo.X > 12 || pTo.Y > 12)
@@ -245,7 +187,15 @@ namespace Jackal
                     if (force) newpos = pTo;
                     else newpos = pFrom;
                     break;
-                    
+
+                case (TileType.fort):
+                case (TileType.gfort):
+                    var pirates = PiratesColl.Where(X => X.Pos == pTo);
+                    var fpirates = pirates.Where(X => X.Team != pir.Team);
+                    if (fpirates.Count() == 0) newpos = pTo;
+                    else return -5; //пират идёт в занятый форт
+                    break;
+
                 case (TileType.hole):
                     pir.Trapped = true;
                     newpos = pTo;

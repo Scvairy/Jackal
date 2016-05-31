@@ -35,10 +35,10 @@ namespace Jackal
             try { P = PiratesColl[0]; } catch { }
         }
 
-        public void NextTurn()
+        public void NextTurn(int a)
         { }
 
-        public void NextTurn(int a)
+        public void NextTurn()
         {
             switch (Turn)
             {
