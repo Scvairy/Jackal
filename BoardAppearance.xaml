@@ -154,7 +154,9 @@
                     </MultiDataTrigger.Conditions>
                     <MultiDataTrigger.Setters>
                         <Setter Property="Stroke" Value="Green" />
-                        <Setter Property="StrokeThickness" Value="0.2" />
+                        <Setter Property="StrokeThickness" Value="0.05" />
+                        <Setter Property="Width" Value="0.4" />
+                        <Setter Property="Height" Value="0.4" />
                     </MultiDataTrigger.Setters>
                 </MultiDataTrigger>
             </Style.Triggers>
