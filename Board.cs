@@ -126,7 +126,8 @@ namespace Jackal
                         }
 
                     default:
-                        newpos = pTo;
+                        pir.Pos = pTo;
+                        Move(pTo, pir);
                         break;
                 }
             }
@@ -136,40 +137,6 @@ namespace Jackal
             }
             Open(newpos);
             pir.Pos = newpos;
-            return 0;
-        }
-
-        public int Swim(Point pTo, Pirate pir)
-        {
-            if (pTo.X < 0 || pTo.Y < 0 || pTo.X > 12 || pTo.Y > 12)
-                return -1; //выход за пределы диапазона поля
-            var pFrom = pir.Pos;
-            var from = GetIndex(pFrom);
-            var to = GetIndex(pTo);
-            var fromTile = TilesColl[from];
-            var toTile = TilesColl[to];
-            Point newpos = new Point();
-            Open(pTo);
-            switch (toTile.Type)
-            {
-                case (TileType.water):
-                    newpos = pTo;
-                    break;
-                case (TileType.ship):
-                    if (toTile.Team == pir.Team)
-                        newpos = pTo;
-                    else
-                    {
-                        Kill(pir);
-                    }
-                    break;
-
-                default:
-                    newpos = pFrom;
-                    break;
-            }
-            pir.Pos = newpos;
-            UpdateAble(pir);
             return 0;
         }
 
@@ -265,6 +232,39 @@ namespace Jackal
                 return FinishStep(0, pir, drink);
             }
         }
+        public int Swim(Point pTo, Pirate pir)
+        {
+            if (pTo.X < 0 || pTo.Y < 0 || pTo.X > 12 || pTo.Y > 12)
+                return -1; //выход за пределы диапазона поля
+            var pFrom = pir.Pos;
+            var from = GetIndex(pFrom);
+            var to = GetIndex(pTo);
+            var fromTile = TilesColl[from];
+            var toTile = TilesColl[to];
+            Point newpos = new Point();
+            Open(pTo);
+            switch (toTile.Type)
+            {
+                case (TileType.water):
+                    newpos = pTo;
+                    break;
+                case (TileType.ship):
+                    if (toTile.Team == pir.Team)
+                        newpos = pTo;
+                    else
+                    {
+                        Kill(pir);
+                    }
+                    break;
+
+                default:
+                    newpos = pFrom;
+                    break;
+            }
+            pir.Pos = newpos;
+            UpdateAble(pir);
+            return 0;
+        }
         public Point GetShip(Player team)
         {
             var tile = TilesColl.Where(X => X.Team == team).FirstOrDefault();
@@ -286,7 +286,7 @@ namespace Jackal
         public void Kill(Pirate pir)
         {
             pir.Alive = false;
-            pir.Pos = new Point(-1, -1);
+            pir.Pos = new Point(13, 0);
         }
 
         public void UpdateAble(Pirate pir)

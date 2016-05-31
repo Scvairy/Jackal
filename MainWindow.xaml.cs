@@ -31,12 +31,19 @@ namespace Jackal
         private void clockwise_click(object sender, RoutedEventArgs e)
         {
             for (int x = 0; x < BA.Brd.TilesColl.Count; x++)
+            {
                 BA.Brd.TilesColl[x].Direction = (TileDirection)(((int)BA.Brd.TilesColl[x].Direction + 90) % 360);
+                BA.Brd.TilesColl[x].RotateVec(TileDirection.up);
+            }
+
         }
         private void counterclockwise_click(object sender, RoutedEventArgs e)
         {
             for (int x = 0; x < BA.Brd.TilesColl.Count; x++)
+            {
                 BA.Brd.TilesColl[x].Direction = (TileDirection)(((int)BA.Brd.TilesColl[x].Direction + 270) % 360);
+                BA.Brd.TilesColl[x].RotateVec(TileDirection.down);
+            }
         }
     }
 }

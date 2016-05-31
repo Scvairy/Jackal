@@ -244,7 +244,7 @@ namespace Jackal
                     ImageUri = new Uri("./tiles/empty!.png", UriKind.Relative);
                     break;
             }
-            RotateVec(Vectors, Direction);
+            RotateVec(Direction);
         }
 
         public Tile(short g, TileType type) : this(type, 0, 0, false, TileDirection.up, g) { }
@@ -287,14 +287,14 @@ namespace Jackal
             }
         }
 
-        void RotateVec(List<Point> Vecs, TileDirection dir)
+        public void RotateVec(TileDirection dir)
         {
-            for (int i = 0; i < Vecs.Count; i++)
+            for (int i = 0; i < Vectors.Count; i++)
             {
-                var v = Vecs[i];
+                var v = Vectors[i];
                 double x = (v.X * cos((int)dir)) - (v.Y * sin((int)dir)),
                        y = (v.X * sin((int)dir)) + (v.Y * cos((int)dir));
-                Vecs[i] = new Point(x, y);
+                Vectors[i] = new Point(x, y);
             }
         }
     }
