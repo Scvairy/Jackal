@@ -45,15 +45,7 @@ namespace Jackal
             get { return this._Alive; }
             set { this._Alive = value; RaisePropertyChanged(() => this.Alive); }
         }
-
-        private bool[,] _Able = new bool[3, 3];
-        public bool[,] Able
-        {
-            get { return this._Able; }
-            set { this._Able = value; RaisePropertyChanged(() => this.Able); }
-        }
         
-
         private int _Drunkc;
         public int Drunkc
         {
@@ -90,9 +82,6 @@ namespace Jackal
             Drunkc = drunkc;
             Selected = selected;
             Trapped = false;
-            for (int j = 0; y < 3; y++)
-                for (int i = 0; x < 3; x++)
-                    Able[i, j] = true;
         }
     }
 }

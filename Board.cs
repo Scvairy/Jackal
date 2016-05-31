@@ -44,7 +44,7 @@ namespace Jackal
             boardArray = new Tile[13, 13];
 
             for (int y = 0; y < 13; y += 12)
-                for (int x = 0; x < 13; x++)
+                for (int x = 1; x < 12; x++)
                     SetWater(x, y, boardArray); //0th and last with water
             for (int y = 1; y < 12; y++)
                 for (int x = 0; x < 13; x += 12)
@@ -65,6 +65,11 @@ namespace Jackal
                 for (int y = 2; y < 11; y++)
                     SetRandomTile(x, y, tiles, boardArray);
 
+            SetGraveyard(0, 0, boardArray);
+            SetGraveyard(0, 12, boardArray);
+            SetGraveyard(12, 12, boardArray);
+            SetGraveyard(12, 0, boardArray);
+
             SetShip(6, 0, boardArray, Player.black);
             SetShip(0, 6, boardArray, Player.red);
             SetShip(6, 12, boardArray, Player.white);
@@ -81,6 +86,10 @@ namespace Jackal
 
         }
 
+        public void SetGraveyard(int x, int y, Tile[,] tiles)
+        {
+            tiles[x, y] = new Tile(TileType.graveyard);
+        }
         public void SetShip(int x, int y, Tile[,] tiles, Player team = Player.black)
         {
             tiles[x, y] = new Tile(TileType.ship, 0, 0, true, TileDirection.up, 0, team);
@@ -98,13 +107,13 @@ namespace Jackal
             switch (TilesColl[to].Direction)
             {
                 case (TileDirection.up):
-                    newpos = new Point(cannon.X, 0);
+                    newpos = new Point(cannon.X, 12);
                     break;
                 case (TileDirection.left):
                     newpos = new Point(0, cannon.Y);
                     break;
                 case (TileDirection.down):
-                    newpos = new Point(cannon.X, 12);
+                    newpos = new Point(cannon.X, 0);
                     break;
                 case (TileDirection.right):
                     newpos = new Point(12, cannon.Y);
@@ -130,6 +139,7 @@ namespace Jackal
 
         public int Move(Point pTo, Pirate pir, bool arrow = false, bool force = false)
         {
+            if (pir.Alive == false) return -6; //пират мёртв (graveyard tile)
             if (pTo.X < 0 || pTo.Y < 0 || pTo.X > 12 || pTo.Y > 12)
                 return -1; //выход за пределы диапазона поля
             if (pir.Drunkc > 0)
@@ -188,11 +198,30 @@ namespace Jackal
                     else newpos = pFrom;
                     break;
 
-                case (TileType.fort):
+                case (TileType.graveyard):
+                    newpos = pFrom;
+                    break;
+
                 case (TileType.gfort):
+                    var pirsThere = PiratesColl.Where(X => X.Pos == pTo);
+                    var enemyPirsThere = pirsThere.Where(X => X.Team != pir.Team);
+                    if (enemyPirsThere.Count() == 0)
+                    {
+                        newpos = pTo;
+                        var deadpirs = PiratesColl.Where(X => X.Alive == false);
+                        foreach (Pirate p in deadpirs)
+                        {
+                            p.Alive = true;
+                            p.Pos = pTo;
+                        }
+                    }
+                    else return -5; //пират идёт в занятый форт
+                    break;
+
+                case (TileType.fort):
                     var pirates = PiratesColl.Where(X => X.Pos == pTo);
-                    var fpirates = pirates.Where(X => X.Team != pir.Team);
-                    if (fpirates.Count() == 0) newpos = pTo;
+                    var enemypirates = pirates.Where(X => X.Team != pir.Team);
+                    if (enemypirates.Count() == 0) newpos = pTo;
                     else return -5; //пират идёт в занятый форт
                     break;
 
@@ -217,7 +246,7 @@ namespace Jackal
                     pir.Lab = 4;
                     newpos = pTo;
                     break;
-                    
+
                 case (TileType.cannibal):
                     Kill(pir);
                     break;
@@ -252,8 +281,8 @@ namespace Jackal
                             break;
                     }
                     Open(newpos);
-                    pir.Pos = newpos;
-                    return FinishStep(0, pir);
+                    pir.Pos = pTo;
+                    return FinishStep(Move(newpos, pir, false, true), pir);
 
                 case (TileType.ice):
                     pir.Pos = pTo;
@@ -281,8 +310,27 @@ namespace Jackal
                     break;
             }
             Open(newpos);
+            var pirs = PiratesColl.Where(X => X.Pos == newpos && X.Team != pir.Team);
+            if (pirs.Count() == 1)
+            {
+                var victim = pirs.ElementAt(0);
+                if (victim.Gold == true)
+                {
+                    victim.Gold = false;
+                    TilesColl[GetIndex(victim.Pos)].Gold++;
+                }
+                victim.Pos = GetShipPos(victim.Team);
+            }
+            else if (pirs.Count() > 1)
+            {
+                if (pir.Gold == true)
+                {
+                    pir.Gold = false;
+                    TilesColl[GetIndex(newpos)].Gold++;
+                }
+                newpos = GetShipPos(pir.Team);
+            }
             pir.Pos = newpos;
-            UpdateAble(pir);
             return FinishStep(0, pir, drink);
         }
 
@@ -316,7 +364,6 @@ namespace Jackal
                     break;
             }
             pir.Pos = newpos;
-            UpdateAble(pir);
             return 0;
         }
 
@@ -342,27 +389,22 @@ namespace Jackal
         public void Kill(Pirate pir)
         {
             pir.Alive = false;
-            pir.Pos = new Point(13, -1);
+            var newpos = new Point();
+            switch (pir.Team)
+            {
+                case (Player.red):
+                    newpos = new Point(0, 12);
+                    break;
+                case (Player.white):
+                    newpos = new Point(12, 12);
+                    break;
+                case (Player.yellow):
+                    newpos = new Point(12, 0);
+                    break;
+            }
+            pir.Pos = newpos;
         }
 
-        public void UpdateAble(Pirate pir)
-        {
-            for (int y = -1; y < 2; y++)
-                for (int x = -1; x < 2; x++)
-                {
-                    var nx = pir.Pos.X + x;
-                    var ny = pir.Pos.Y + y;
-                    if (nx < 0 || ny < 0 || nx > 12 || ny > 12)
-                    {
-                        pir.Able[x + 1, y + 1] = false;
-                        return;
-                    }
-                    if (TilesColl[GetIndex(nx, ny)].Opened)
-                        pir.Able[x + 1, y + 1] = !(TilesColl[GetIndex(nx, ny)].Type == TileType.croc ||
-                                        TilesColl[GetIndex(nx, ny)].Type == TileType.water);
-                    else pir.Able[x + 1, y + 1] = !pir.Gold;
-                }
-        }
 
         public void Open(int x, int y)
         {

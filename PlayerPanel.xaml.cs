@@ -35,10 +35,10 @@ namespace Jackal
             try { P = PiratesColl[0]; } catch { }
         }
 
-        public void NextTurn(int a)
+        public void NextTurn()
         { }
 
-        public void NextTurn()
+        public void NextTurn(int a)
         {
             switch (Turn)
             {
@@ -80,29 +80,6 @@ namespace Jackal
             }
             catch { }
         }
-        public void SetAbility()
-        {
-            ul.IsEnabled = true;//P.Able[0, 0];
-            u.IsEnabled = true;
-            ur.IsEnabled = true;
-            l.IsEnabled = true;
-            r.IsEnabled = true;
-            dl.IsEnabled = true;
-            d.IsEnabled = true;
-            dr.IsEnabled = true;
-        }
-
-        //public void SetAbility()
-        //{
-        //    ul.IsEnabled = P.Able[0, 0];
-        //    u.IsEnabled = P.Able[1, 0];
-        //    ur.IsEnabled = P.Able[2, 0];
-        //    l.IsEnabled = P.Able[0, 1];
-        //    r.IsEnabled = P.Able[2, 1];
-        //    dl.IsEnabled = P.Able[0, 2];
-        //    d.IsEnabled = P.Able[1, 2];
-        //    dr.IsEnabled = P.Able[2, 2];
-        //}
 
         private void ul_Click(object sender, RoutedEventArgs e)
         {

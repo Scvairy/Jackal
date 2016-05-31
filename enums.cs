@@ -14,7 +14,7 @@ namespace Jackal
     {
         water, grass1, grass2, grass3, grass4, astr1, adiag1, adiag2, astr2, a3,
         astr4, adiag4, rum, lab2, lab3, lab4, lab5, ice, hole, croc,
-        cannibal, fort, gfort, coins1, coins2, coins3, coins4, coins5, balloon, cannon, horse, plane, ship
+        cannibal, fort, gfort, coins1, coins2, coins3, coins4, coins5, balloon, cannon, horse, plane, ship, graveyard
     }
 
     public enum TileDirection { right = 0, up = 90, left = 180, down = 270 }

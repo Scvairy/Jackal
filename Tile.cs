@@ -240,6 +240,10 @@ namespace Jackal
                     ImageUri = new Uri("./tiles/airplane.png", UriKind.Relative);
                     break;
 
+                case (TileType.graveyard):
+                    ImageUri = new Uri("./tiles/graveyard.png", UriKind.Relative);
+                    break;
+
                 default: // TODO: remove this when proper image arranging is done
                     ImageUri = new Uri("./tiles/empty!.png", UriKind.Relative);
                     break;
