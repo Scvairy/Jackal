@@ -35,6 +35,9 @@ namespace Jackal
         }
 
         public void NextTurn()
+        { }
+
+        public void NextTurn(int a)
         {
             switch (Turn)
             {
