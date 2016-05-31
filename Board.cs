@@ -115,8 +115,7 @@ namespace Jackal
                     case (TileType.ship):
                         if (IsEnemyShip(TilesColl[to], pir))
                         {
-                            pir.Alive = false;
-                            pir.Pos = new Point(-1, -1);
+                            Kill(pir);
                             break;
                         }
                         else
@@ -152,6 +151,14 @@ namespace Jackal
                 case (TileType.water):
                     newpos = pTo;
                     break;
+                case (TileType.ship):
+                    if (toTile.Team == pir.Team)
+                        newpos = pTo;
+                    else
+                    {
+                        Kill(pir);
+                    }
+
                 default:
                     newpos = pFrom;
                     break;
@@ -249,6 +256,11 @@ namespace Jackal
             }
         }
 
+        public void Kill(Pirate pir)
+        {
+            pir.Alive = false;
+            pir.Pos = new Point(-1, -1);
+        }
 
         public void UpdateAble(Pirate pir)
         {
