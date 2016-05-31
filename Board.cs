@@ -130,7 +130,10 @@ namespace Jackal
                         break;
                 }
             }
-            else return -3; //поворот не туда
+            else
+            {
+                return -3; //поворот не туда
+            }
             Open(newpos);
             pir.Pos = newpos;
             return 0;
