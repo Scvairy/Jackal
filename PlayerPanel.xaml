@@ -4,10 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Jackal"
-             mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="400">
-    <Grid>
-        <Grid HorizontalAlignment="Right" Margin="15" Height="90" Width="90">
+             mc:Ignorable="d">
+    <StackPanel Orientation="Horizontal">
+        <StackPanel x:Name="Teams" VerticalAlignment="Center" Margin="5" IsEnabled="False">
+            <RadioButton x:Name="t0" Content="Чёрные" IsChecked="True"/>
+            <RadioButton x:Name="t1" Content="Красные"/>
+            <RadioButton x:Name="t2" Content="Белые"/>
+            <RadioButton x:Name="t3" Content="Жёлтые"/>
+        </StackPanel>
+        <StackPanel VerticalAlignment="Center" Margin="5">
+            <RadioButton x:Name="firstp" Content="Первый пират" IsChecked="True" Checked="firstp_Checked"/>
+            <RadioButton x:Name="secondp" Content="Второй пират" Checked="secondp_Checked"/>
+            <RadioButton x:Name="thirdp" Content="Третий пират" Checked="thirdp_Checked"/>
+        </StackPanel>
+        <Grid HorizontalAlignment="Right" Margin="15" Height="90" Width="90" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -29,5 +39,5 @@
             <Button Name="d" Content="↓" Grid.Row="2" Grid.Column="1" Click="d_Click"/>
             <Button Name="dr" Content="↘" Grid.Row="2" Grid.Column="2" Click="dr_Click"/>
         </Grid>
-    </Grid>
+    </StackPanel>
 </UserControl>

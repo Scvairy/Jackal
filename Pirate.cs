@@ -39,11 +39,11 @@ namespace Jackal
             set { this._Pos = value; RaisePropertyChanged(() => this.Pos); }
         }
 
-        private bool _Dead;
-        public bool Dead
+        private bool _Alive;
+        public bool Alive
         {
-            get { return this._Dead; }
-            set { this._Dead = value; RaisePropertyChanged(() => this.Dead); }
+            get { return this._Alive; }
+            set { this._Alive = value; RaisePropertyChanged(() => this.Alive); }
         }
 
         private bool[,] _Able = new bool[3, 3];
@@ -65,7 +65,13 @@ namespace Jackal
         {
             get { return this._Drunk; }
             set { this._Drunk = value; RaisePropertyChanged(() => this.Drunk); }
-        };
+        }
+        private bool _Selected;
+        public bool Selected
+        {
+            get { return this._Selected; }
+            set { this._Selected = value; RaisePropertyChanged(() => this.Selected); }
+        }
 
         public Pirate(PirateId id, Player team, int x, int y, bool inSea = false, bool drunk = false)
         {
@@ -73,9 +79,10 @@ namespace Jackal
             Team = team;
             Pos = new Point(x, y);
             Gold = false;
-            Dead = false;
+            Alive = true;
             InSea = inSea;
             Drunk = drunk;
+            Selected = false;
             for (int j = 0; y < 3; y++)
                 for (int i = 0; x < 3; x++)
                     Able[i, j] = true;

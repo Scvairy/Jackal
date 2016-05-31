@@ -17,6 +17,6 @@ namespace Jackal
         cannibal, fort, gfort, coins1, coins2, coins3, coins4, coins5, balloon, cannon, horse, plane, ship
     }
 
-    public enum TileDirection { up = 0, left = 270, right = 90, down = 180 }
+    public enum TileDirection { right = 0, up = 90, left = 180, down = 270 }
 
 }

@@ -249,31 +249,52 @@ namespace Jackal
 
         public Tile(short g, TileType type) : this(type, 0, 0, false, TileDirection.up, g) { }
 
-        RotateVec(List<Point> Vecs, TileDirection dir)
+        static public bool IsRightDir(Tile t, Point dir)
         {
-            int cos90 = 0;
-            int sin90 = 1;
-            int cos180 = -1;
-            int sin180 = 0;
-            int cos270 = 0;
-            int sin270 = -1;
+            return t.Vectors.Contains(dir);
+        }
+
+        int cos(int degree)
+        {
+            switch (degree)
+            {
+                case (0):
+                    return 1;
+                case (90):
+                    return 0;
+                case (180):
+                    return -1;
+                case (270):
+                    return 0;
+                default:
+                    return 2;
+            }
+        }
+        int sin(int degree)
+        {
+            switch (degree)
+            {
+                case (0):
+                    return 0;
+                case (90):
+                    return 1;
+                case (180):
+                    return 0;
+                case (270):
+                    return -1;
+                default:
+                    return 2;
+            }
+        }
+
+        void RotateVec(List<Point> Vecs, TileDirection dir)
+        {
             for (int i = 0; i < Vecs.Count; i++)
             {
                 var v = Vecs[i];
-                switch (dir)
-                {
-                    case (TileDirection.up):
-                        break;
-                    case (TileDirection.right):
-                        v = new Point(cos90 * v.X - sin90 * v.Y, sin90 * v.X + cos90 * v.Y);
-                        break;
-                    case (TileDirection.down):
-                        v = new Point(cos180 * v.X - sin180 * v.Y, sin180 * v.X + cos180 * v.Y);
-                        break;
-                    case (TileDirection.left):
-                        v = new Point(cos270 * v.X - sin270 * v.Y, sin270 * v.X + cos270 * v.Y);
-                        break;
-                }
+                double x = (v.X * cos((int)dir)) - (v.Y * sin((int)dir)),
+                       y = (v.X * sin((int)dir)) + (v.Y * cos((int)dir));
+                Vecs[i] = new Point(x, y);
             }
         }
     }

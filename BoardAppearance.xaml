@@ -9,42 +9,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <Style x:Key="PirateStyle" TargetType="{x:Type Ellipse}">
-            <Style.Triggers>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Team}" Value="{x:Static local:Player.red}"/>
-                    </MultiDataTrigger.Conditions>
-                    <MultiDataTrigger.Setters>
-                        <Setter Property="Fill" Value="Red" />
-                    </MultiDataTrigger.Setters>
-                </MultiDataTrigger>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Team}" Value="{x:Static local:Player.black}"/>
-                    </MultiDataTrigger.Conditions>
-                    <MultiDataTrigger.Setters>
-                        <Setter Property="Fill" Value="Black" />
-                    </MultiDataTrigger.Setters>
-                </MultiDataTrigger>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Team}" Value="{x:Static local:Player.yellow}"/>
-                    </MultiDataTrigger.Conditions>
-                    <MultiDataTrigger.Setters>
-                        <Setter Property="Fill" Value="Yellow" />
-                    </MultiDataTrigger.Setters>
-                </MultiDataTrigger>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Team}" Value="{x:Static local:Player.white}"/>
-                    </MultiDataTrigger.Conditions>
-                    <MultiDataTrigger.Setters>
-                        <Setter Property="Fill" Value="White" />
-                    </MultiDataTrigger.Setters>
-                </MultiDataTrigger>
-            </Style.Triggers>
-        </Style>
         <Style x:Key="TileStyle" TargetType="{x:Type Image}">
             <Style.Triggers>
                 <MultiDataTrigger>
@@ -62,7 +26,7 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
-                                <RotateTransform Angle="90" />
+                                <RotateTransform Angle="-90" />
                             </Setter.Value>
                         </Setter>
                     </MultiDataTrigger.Setters>
@@ -74,7 +38,7 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
-                                <RotateTransform Angle="180" />
+                                <RotateTransform Angle="-180" />
                             </Setter.Value>
                         </Setter>
                     </MultiDataTrigger.Setters>
@@ -86,7 +50,7 @@
                     <MultiDataTrigger.Setters>
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
-                                <RotateTransform Angle="270" />
+                                <RotateTransform Angle="-270" />
                             </Setter.Value>
                         </Setter>
                     </MultiDataTrigger.Setters>
@@ -150,6 +114,51 @@
                 </MultiDataTrigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="PirateStyle" TargetType="{x:Type Ellipse}">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Team}" Value="{x:Static local:Player.red}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Fill" Value="Red" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Team}" Value="{x:Static local:Player.black}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Fill" Value="Black" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Team}" Value="{x:Static local:Player.yellow}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Fill" Value="Yellow" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Team}" Value="{x:Static local:Player.white}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Fill" Value="White" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Selected}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Stroke" Value="Green" />
+                        <Setter Property="StrokeThickness" Value="0.2" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -168,10 +177,6 @@
                                Height="0.99" 
                                RenderTransformOrigin=".5,.5"
                                Style="{StaticResource TileStyle}">
-                                    <!--
-                            <i:Interaction.Behaviors>
-                                <ei:MouseDragElementBehavior/>
-                            </i:Interaction.Behaviors>-->
                                 </Image>
                             </Grid>
                         </DataTemplate>
@@ -208,7 +213,7 @@
             </Grid>
         </Viewbox>
         <Grid>
-            <local:PlayerPanel x:Name="PP" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+            <local:PlayerPanel x:Name="PP" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
         </Grid>
     </Grid>
 </UserControl>
