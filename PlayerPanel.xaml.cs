@@ -159,7 +159,7 @@ namespace Jackal
         private void MoveIfPossible(int newx, int newy)
         {
             var moveResult = Brd.Move(new System.Drawing.Point(newx, newy), P);
-            if (moveResult == 0)
+            if (moveResult >= 0)
                 NextTurn();
             if (moveResult == -1)
                 MessageBox.Show("Вы пытаетесь выйти за пределы поля");

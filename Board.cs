@@ -352,7 +352,6 @@ namespace Jackal
             var fromTile = TilesColl[from];
             var toTile = TilesColl[to];
             Point newpos = new Point();
-            Open(pTo);
             switch (toTile.Type)
             {
                 case (TileType.water):
@@ -371,6 +370,7 @@ namespace Jackal
                     newpos = pFrom;
                     break;
             }
+            Open(newpos);
             pir.Pos = newpos;
             return 0;
         }
