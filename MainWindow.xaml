@@ -10,19 +10,12 @@
     <local:BoardAppearance x:Name="BA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <StackPanel Orientation="Horizontal">
             <StackPanel>
-                <Button Margin="5" Width="100" Height="30" Content="Toggle" Click="toggle_click" />
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Name="tbx" Width="45" Margin="5" Height="30"></TextBox>
-                    <TextBox Name="tby" Width="45" Margin="5" Height="30"></TextBox>
-                </StackPanel>
-                <Button Margin="5" Width="100" Height="30" Content="Toggle (x,y)" Click="tg_selected_click" />
+                <Button Margin="5" Width="100" Height="30" Content="Открыть все" Click="toggle_click" />
+                <Button Margin="5" Width="100" Height="30" Content="Новая игра" Click="newgame_Click" />
             </StackPanel>
             <StackPanel>
                 <Button Margin="5" Width="100" Height="30" Content="Повернуть по" Click="clockwise_click" />
                 <Button Margin="5" Width="100" Height="30" Content="Повер. против" Click="counterclockwise_click" />
-            </StackPanel>
-            <StackPanel>
-                
             </StackPanel>
         </StackPanel>
     </Grid>

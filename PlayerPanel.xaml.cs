@@ -35,10 +35,10 @@ namespace Jackal
             try { P = PiratesColl[0]; } catch { }
         }
 
-        public void NextTurn()
+        public void NextTurn(int a)
         { }
 
-        public void NextTurn(int a)
+        public void NextTurn()
         {
             switch (Turn)
             {
@@ -162,11 +162,17 @@ namespace Jackal
             if (moveResult == 0)
                 NextTurn();
             if (moveResult == -1)
-                MessageBox.Show("выход за пределы диапазона поля");
+                MessageBox.Show("Вы пытаетесь выйти за пределы поля");
             if (moveResult == -2)
-                MessageBox.Show("пират пьян");
+                MessageBox.Show("Ваш пират пьян");
             if (moveResult == -3)
-                MessageBox.Show("поворот не туда");
+                MessageBox.Show("Поворот не туда");
+            if (moveResult == -4)
+                MessageBox.Show("Пират в ловушке");
+            if (moveResult == -5)
+                MessageBox.Show("Пират не может попасть в занятый форт");
+            if (moveResult == -6)
+                MessageBox.Show("Пират мёртв");
 
         }
 

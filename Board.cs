@@ -12,24 +12,8 @@ namespace Jackal
     {
         public Tile[,] boardArray { get; set; }
         public ObservableCollection<Tile> TilesColl = new ObservableCollection<Tile>();
-        public ObservableCollection<Pirate> PiratesColl = new ObservableCollection<Pirate> {
-
-            new Pirate(PirateId.first, Player.black, 6, 0, true),
-            new Pirate(PirateId.second, Player.black, 6, 0),
-            new Pirate(PirateId.third, Player.black, 6, 0),
-
-            new Pirate(PirateId.first, Player.red, 0, 6),
-            new Pirate(PirateId.second, Player.red, 0, 6),
-            new Pirate(PirateId.third, Player.red, 0, 6),
-
-            new Pirate(PirateId.first, Player.white, 6, 12),
-            new Pirate(PirateId.second, Player.white, 6, 12),
-            new Pirate(PirateId.third, Player.white, 6, 12),
-
-            new Pirate(PirateId.first, Player.yellow, 12, 6),
-            new Pirate(PirateId.second, Player.yellow, 12, 6),
-            new Pirate(PirateId.third, Player.yellow, 12, 6)
-        };
+        public int TeamsCount = 4;
+        public ObservableCollection<Pirate> PiratesColl = new ObservableCollection<Pirate>();
         public static Random rand = new Random();
 
         public Board()
@@ -44,7 +28,7 @@ namespace Jackal
             boardArray = new Tile[13, 13];
 
             for (int y = 0; y < 13; y += 12)
-                for (int x = 1; x < 12; x++)
+                for (int x = 0; x < 13; x++)
                     SetWater(x, y, boardArray); //0th and last with water
             for (int y = 1; y < 12; y++)
                 for (int x = 0; x < 13; x += 12)
@@ -65,15 +49,39 @@ namespace Jackal
                 for (int y = 2; y < 11; y++)
                     SetRandomTile(x, y, tiles, boardArray);
 
-            SetGraveyard(0, 0, boardArray);
-            SetGraveyard(0, 12, boardArray);
-            SetGraveyard(12, 12, boardArray);
-            SetGraveyard(12, 0, boardArray);
+            if (TeamsCount > 0)
+            {
+                PiratesColl.Add(new Pirate(PirateId.first, Player.black, 6, 0, true));
+                PiratesColl.Add(new Pirate(PirateId.second, Player.black, 6, 0));
+                PiratesColl.Add(new Pirate(PirateId.third, Player.black, 6, 0));
+                SetGraveyard(0, 0, boardArray);
+                SetShip(6, 0, boardArray, Player.black);
+            }
+            if (TeamsCount > 2)
+            {
 
-            SetShip(6, 0, boardArray, Player.black);
-            SetShip(0, 6, boardArray, Player.red);
-            SetShip(6, 12, boardArray, Player.white);
-            SetShip(12, 6, boardArray, Player.yellow);
+                PiratesColl.Add(new Pirate(PirateId.first, Player.red, 0, 6));
+                PiratesColl.Add(new Pirate(PirateId.second, Player.red, 0, 6));
+                PiratesColl.Add(new Pirate(PirateId.third, Player.red, 0, 6));
+                SetGraveyard(0, 12, boardArray);
+                SetShip(0, 6, boardArray, Player.red);
+            }
+            if (TeamsCount > 1)
+            {
+                PiratesColl.Add(new Pirate(PirateId.first, Player.white, 6, 12));
+                PiratesColl.Add(new Pirate(PirateId.second, Player.white, 6, 12));
+                PiratesColl.Add(new Pirate(PirateId.third, Player.white, 6, 12));
+                SetGraveyard(12, 12, boardArray);
+                SetShip(6, 12, boardArray, Player.white);
+            }
+            if (TeamsCount > 3)
+            {
+                PiratesColl.Add(new Pirate(PirateId.first, Player.yellow, 12, 6));
+                PiratesColl.Add(new Pirate(PirateId.second, Player.yellow, 12, 6));
+                PiratesColl.Add(new Pirate(PirateId.third, Player.yellow, 12, 6));
+                SetGraveyard(12, 0, boardArray);
+                SetShip(12, 6, boardArray, Player.yellow);
+            }
 
             for (int y = 0; y < 13; y++)
                 for (int x = 0; x < 13; x++)
@@ -139,7 +147,7 @@ namespace Jackal
 
         public int Move(Point pTo, Pirate pir, bool arrow = false, bool force = false)
         {
-            if (pir.Alive == false) return -6; //пират мёртв (graveyard tile)
+            if (pir.Alive == false) return -6; //пират мёртв
             if (pTo.X < 0 || pTo.Y < 0 || pTo.X > 12 || pTo.Y > 12)
                 return -1; //выход за пределы диапазона поля
             if (pir.Drunkc > 0)

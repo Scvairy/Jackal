@@ -12,14 +12,6 @@ namespace Jackal
         public MainWindow()
         {
             InitializeComponent();
-            Random rnd = new Random();
-        }
-
-        private void tg_selected_click(object sender, RoutedEventArgs e)
-        {
-            int x = int.Parse(tbx.Text); int y = int.Parse(tby.Text);
-            var n = Board.GetIndex(x,y);
-            BA.Brd.TilesColl[n].Opened = !BA.Brd.TilesColl[n].Opened;
         }
 
         private void toggle_click(object sender, RoutedEventArgs e)
@@ -44,6 +36,12 @@ namespace Jackal
                 BA.Brd.TilesColl[x].Direction = (TileDirection)(((int)BA.Brd.TilesColl[x].Direction + 270) % 360);
                 BA.Brd.TilesColl[x].RotateVec(TileDirection.down);
             }
+        }
+
+        private void newgame_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+            Application.Current.Shutdown();
         }
     }
 }
