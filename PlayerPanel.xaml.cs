@@ -133,7 +133,21 @@ namespace Jackal
 
         private void coin_Click(object sender, RoutedEventArgs e)
         {
-
+            var tile = Brd.TilesColl[Board.GetIndex(P.Pos)];
+            if (P.Gold)
+            {
+                tile.Gold++;
+                P.Gold = false;
+            }
+            else if (tile.Gold > 0)
+            {
+                tile.Gold--;
+                P.Gold = true;
+            }
+            else
+            {
+                MessageBox.Show("Нет монетки");
+            }
         }
 
         private void r_Click(object sender, RoutedEventArgs e)

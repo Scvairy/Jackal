@@ -121,7 +121,6 @@ namespace Jackal
                 switch (toTile.Type)
                 {
                     case (TileType.water):
-                        pir.InSea = true;
                         newpos = pTo;
                         return 0;
 

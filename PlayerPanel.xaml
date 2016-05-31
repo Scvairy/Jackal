@@ -33,7 +33,7 @@
             <Button Name="u" Content="↑" Grid.Row="0" Grid.Column="1" Click="u_Click"/>
             <Button Name="ur" Content="↗" Grid.Row="0" Grid.Column="2" Click="ur_Click"/>
             <Button Name="l" Content="←" Grid.Row="1" Grid.Column="0" Click="l_Click"/>
-            <Button IsEnabled="False" Name="coin" Content="М" Grid.Row="1" Grid.Column="1" Click="coin_Click"/>
+            <Button Name="coin" Content="М" Grid.Row="1" Grid.Column="1" Click="coin_Click"/>
             <Button Name="r" Content="→" Grid.Row="1" Grid.Column="2" Click="r_Click"/>
             <Button Name="dl" Content="↙" Grid.Row="2" Grid.Column="0" Click="dl_Click"/>
             <Button Name="d" Content="↓" Grid.Row="2" Grid.Column="1" Click="d_Click"/>
