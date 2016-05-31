@@ -5,7 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Jackal"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <local:BoardAppearance HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+        Title="Jackal The Boardgame" Height="600" Width="577" SizeToContent="WidthAndHeight">
+    <Grid>
+    <local:BoardAppearance x:Name="BA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <Button Margin="5" Width="100" Height="30" Content="Toggle" Click="toggle_click" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Name="tbx" Width="45" Margin="5" Height="30"></TextBox>
+                    <TextBox Name="tby" Width="45" Margin="5" Height="30"></TextBox>
+                </StackPanel>
+                <Button Margin="5" Width="100" Height="30" Content="Toggle (x,y)" Click="tg_selected_click" />
+            </StackPanel>
+            <StackPanel>
+                <Button Margin="5" Width="100" Height="30" Content="Повернуть по" Click="clockwise_click" />
+                <Button Margin="5" Width="100" Height="30" Content="Повер. против" Click="counterclockwise_click" />
+            </StackPanel>
+            <StackPanel>
+                
+            </StackPanel>
+        </StackPanel>
+    </Grid>
 </Window>

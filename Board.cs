@@ -1,13 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using GalaSoft.MvvmLight;
 
 namespace Jackal
 {
     public class Board
     {
-        public static Tile[,] board { get; set; }
+        public Tile[,] boardArray { get; set; }
+        public ObservableCollection<Tile> TilesColl = new ObservableCollection<Tile>();
+        public ObservableCollection<Pirate> PiratesColl = new ObservableCollection<Pirate> {
+
+            new Pirate(PirateId.first, Player.black, 6, 0),
+            new Pirate(PirateId.second, Player.black, 6, 0),
+            new Pirate(PirateId.third, Player.black, 6, 0),
+
+            new Pirate(PirateId.first, Player.red, 0, 6),
+            new Pirate(PirateId.second, Player.red, 0, 6),
+            new Pirate(PirateId.third, Player.red, 0, 6),
+
+            new Pirate(PirateId.first, Player.white, 6, 12),
+            new Pirate(PirateId.second, Player.white, 6, 12),
+            new Pirate(PirateId.third, Player.white, 6, 12),
+
+            new Pirate(PirateId.first, Player.yellow, 12, 6),
+            new Pirate(PirateId.second, Player.yellow, 12, 6),
+            new Pirate(PirateId.third, Player.yellow, 12, 6)
+        };
+        public static Random rand = new Random();
+
         public Board()
         {
             var tiles = GenerateAllTiles();
@@ -16,41 +39,239 @@ namespace Jackal
                 MessageBox.Show("Количество тайлов не совпадает");
                 return;
             }
-            Random rand = new Random();
-            /*Tile[,]*/
-            board = new Tile[13, 13];
+
+            boardArray = new Tile[13, 13];
 
             for (int y = 0; y < 13; y += 12)
                 for (int x = 0; x < 13; x++)
-                    SetWater(x, y, board); //0th and last with water
+                    SetWater(x, y, boardArray); //0th and last with water
             for (int y = 1; y < 12; y++)
                 for (int x = 0; x < 13; x += 12)
-                    SetWater(x, y, board); //left and right with water
+                    SetWater(x, y, boardArray); //left and right with water
             for (int y = 1; y < 12; y += 10)
                 for (int x = 1; x < 12; x += 10)
-                    SetWater(x, y, board); //corners with water
+                    SetWater(x, y, boardArray); //corners with water
 
             for (int y = 1; y < 12; y += 10)
                 for (int x = 2; x < 11; x++)
-                    SetRandomTile(x, y, rand, tiles, board); //1st and last without corners
+                    SetRandomTile(x, y, tiles, boardArray); //1st and last without corners
 
             for (int y = 2; y < 11; y++)
                 for (int x = 2; x < 11; x++)
-                    SetRandomTile(x, y, rand, tiles, board); //2,2 -> 9,
+                    SetRandomTile(x, y, tiles, boardArray); //2,2 -> 9,
 
             for (int x = 1; x < 12; x += 10)
                 for (int y = 2; y < 11; y++)
-                    SetRandomTile(x, y, rand, tiles, board);
+                    SetRandomTile(x, y, tiles, boardArray);
 
-        }
+            SetShip(6, 0, boardArray, Player.black);
+            SetShip(0, 6, boardArray, Player.red);
+            SetShip(6, 12, boardArray, Player.white);
+            SetShip(12, 6, boardArray, Player.yellow);
 
-        static public void MakeAllBoardOpen(Tile[,] board)
-        {
             for (int y = 0; y < 13; y++)
                 for (int x = 0; x < 13; x++)
-                    board[x, y].opened = true;
+                {
+                    var tmp = boardArray[x, y];
+                    tmp.Pos = new Point(x, y);
+                    TilesColl.Add(tmp);
+                }
+
+
         }
-        static void SetRandomTile(int x, int y, Random rand, List<Tile> tiles, Tile[,] board)
+
+        public void SetShip(int x, int y, Tile[,] tiles, Player team = Player.black)
+        {
+            tiles[x, y] = new Tile(TileType.ship, 0, 0, true, TileDirection.up, 0, team);
+        }
+
+        public bool IsEnemyShip(Tile tile, Pirate pir)
+        {
+            return !(tile.Team == pir.Team);
+        }
+
+        public int ForceMove(Point pTo, Pirate pir)
+        {
+            if (pTo.X < 0 || pTo.Y < 0 || pTo.X > 12 || pTo.Y > 12)
+                return -1; //выход за пределы диапазона поля
+
+            var pFrom = pir.Pos;
+            var from = GetIndex(pFrom);
+            var to = GetIndex(pTo);
+            var fromTile = TilesColl[from];
+            var toTile = TilesColl[to];
+            Point newpos = new Point();
+            Point dir = new Point(pTo.X - pFrom.X, pTo.Y - pFrom.Y);
+            if (Tile.IsRightDir(fromTile, dir))
+            {
+                Open(pTo);
+                switch (toTile.Type)
+                {
+                    case (TileType.water):
+                        pir.InSea = true;
+                        newpos = pTo;
+                        return 0;
+
+                    case (TileType.ship):
+                        if (IsEnemyShip(TilesColl[to], pir))
+                        {
+                            pir.Alive = false;
+                            pir.Pos = new Point(-1, -1);
+                            break;
+                        }
+                        else
+                        {
+                            newpos = pTo;
+                            break;
+                        }
+
+                    default:
+                        newpos = pTo;
+                        break;
+                }
+            }
+            else return -3; //поворот не туда
+            Open(newpos);
+            pir.Pos = newpos;
+            return 0;
+        }
+
+        public int Move(Point pTo, Pirate pir)
+        {
+            if (pTo.X < 0 || pTo.Y < 0 || pTo.X > 12 || pTo.Y > 12)
+                return -1; //выход за пределы диапазона поля
+            var pFrom = pir.Pos;
+            var from = GetIndex(pFrom);
+            var to = GetIndex(pTo);
+            var fromTile = TilesColl[from];
+            var toTile = TilesColl[to];
+            Point newpos = new Point();
+
+            if (pir.Drunk)
+                return -2; //пират пьян
+            else {
+                switch (fromTile.Type)
+                {
+                    case (TileType.astr1):
+                    case (TileType.astr2):
+                    case (TileType.astr4):
+                    case (TileType.adiag1):
+                    case (TileType.adiag2):
+                    case (TileType.adiag4):
+                    case (TileType.a3):
+                        return ForceMove(pTo, pir);
+                }
+                Open(pTo);
+                switch (toTile.Type)
+                {
+                    case (TileType.water):
+                        newpos = pFrom;
+                        break;
+
+                    case (TileType.grass1):
+                    case (TileType.grass2):
+                    case (TileType.grass3):
+                    case (TileType.grass4):
+                    case (TileType.coins1):
+                    case (TileType.coins2):
+                    case (TileType.coins3):
+                    case (TileType.coins4):
+                    case (TileType.coins5):
+                        newpos = pTo;
+                        break;
+
+                    case (TileType.cannon):
+                        Open(pTo);
+                        switch (TilesColl[to].Direction)
+                        {
+                            case (TileDirection.up):
+                                newpos = new Point(pTo.X, 0);
+                                break;
+                            case (TileDirection.left):
+                                newpos = new Point(0, pTo.Y);
+                                break;
+                            case (TileDirection.down):
+                                newpos = new Point(pTo.X, 12);
+                                break;
+                            case (TileDirection.right):
+                                newpos = new Point(12, pTo.Y);
+                                break;
+                        }
+                        pir.Pos = newpos;
+                        return 0;
+
+
+                    case (TileType.croc):
+                        newpos = pir.Pos;
+                        pir.Pos = pTo;
+                        break;
+
+                    case (TileType.rum):
+                        pir.Drunk = true;
+                        newpos = pTo;
+                        break;
+
+                    default:
+                        newpos = pTo;
+                        break;
+                }
+                Open(newpos);
+                pir.Pos = newpos;
+                UpdateAble(pir);
+                return 0;
+            }
+        }
+
+
+        public void UpdateAble(Pirate pir)
+        {
+            for (int y = -1; y < 2; y++)
+                for (int x = -1; x < 2; x++)
+                {
+                    var nx = pir.Pos.X + x;
+                    var ny = pir.Pos.Y + y;
+                    if (nx < 0 || ny < 0 || nx > 12 || ny > 12)
+                    {
+                        pir.Able[x + 1, y + 1] = false;
+                        return;
+                    }
+                    if (TilesColl[GetIndex(nx, ny)].Opened)
+                        pir.Able[x + 1, y + 1] = !(TilesColl[GetIndex(nx, ny)].Type == TileType.croc ||
+                                        TilesColl[GetIndex(nx, ny)].Type == TileType.water);
+                    else pir.Able[x + 1, y + 1] = !pir.Gold;
+                }
+        }
+
+        public void Open(int x, int y)
+        {
+            TilesColl[GetIndex(x, y)].Opened = true;
+        }
+        public void Open(Point p)
+        {
+            if (p.X >= 0 && p.Y >= 0)
+                TilesColl[GetIndex((int)p.X, (int)p.Y)].Opened = true;
+        }
+
+        static public Point GetPoint(int index)
+        {
+            return new Point(index % 13, index / 13);
+        }
+
+        static public int GetIndex(double x, double y)
+        {
+            if (x >= 0 && y >= 0)
+                return (int)(y * 13 + x);
+            else return 0;
+        }
+
+        static public int GetIndex(Point p)
+        {
+            if (p.X >= 0 && p.Y >= 0)
+                return (int)(p.Y * 13 + p.X);
+            else return 0;
+        }
+
+        static void SetRandomTile(int x, int y, List<Tile> tiles, Tile[,] board)
         {
             int r = rand.Next() % (tiles.Count);
             board[x, y] = tiles[r];
@@ -58,7 +279,7 @@ namespace Jackal
         }
         static void SetWater(int x, int y, Tile[,] board)
         {
-            board[x, y] = new Tile(Tile.Type.water, true);
+            board[x, y] = new Tile(TileType.water, x, y, true);
         }
 
         List<Tile> GenerateAllTiles()
@@ -66,273 +287,60 @@ namespace Jackal
             List<Tile> tiles = new List<Tile>();
 
             for (int i = 0; i < 3; i++)
-                tiles.Add(new Tile(Tile.Type.grass2)); //grass
+                tiles.Add(new Tile(TileType.grass2)); //grass
 
             for (int g = 1; g < 5; g++)
                 for (int i = 0; i < 10; i++)
-                    tiles.Add(new Tile((Tile.Type)g)); //grass
+                    tiles.Add(new Tile((TileType)g)); //grass
 
             for (int a = 5; a < 12; a++)
                 for (int i = 0; i < 3; i++)
-                    tiles.Add(new Tile((Tile.Type)a)); //arrows
+                    tiles.Add(new Tile((TileType)a)); //arrows
 
             for (int i = 0; i < 4; i++)
-                tiles.Add(new Tile(Tile.Type.rum));
+                tiles.Add(new Tile(TileType.rum));
             for (int i = 0; i < 5; i++)
-                tiles.Add(new Tile(Tile.Type.lab2));
+                tiles.Add(new Tile(TileType.lab2));
             for (int i = 0; i < 4; i++)
-                tiles.Add(new Tile(Tile.Type.lab3));
+                tiles.Add(new Tile(TileType.lab3));
             for (int i = 0; i < 2; i++)
-                tiles.Add(new Tile(Tile.Type.lab4));
+                tiles.Add(new Tile(TileType.lab4));
 
-            tiles.Add(new Tile(Tile.Type.lab5));
+            tiles.Add(new Tile(TileType.lab5));
 
             for (int i = 0; i < 6; i++)
-                tiles.Add(new Tile(Tile.Type.ice));
+                tiles.Add(new Tile(TileType.ice));
             for (int i = 0; i < 3; i++)
-                tiles.Add(new Tile(Tile.Type.hole));
+                tiles.Add(new Tile(TileType.hole));
             for (int i = 0; i < 4; i++)
-                tiles.Add(new Tile(Tile.Type.croc));
-            tiles.Add(new Tile(Tile.Type.cannibal));
+                tiles.Add(new Tile(TileType.croc));
+            tiles.Add(new Tile(TileType.cannibal));
 
             for (int i = 0; i < 2; i++)
-                tiles.Add(new Tile(Tile.Type.fort, false));
-            tiles.Add(new Tile(Tile.Type.gfort, false));
+                tiles.Add(new Tile(TileType.fort));
+            tiles.Add(new Tile(TileType.gfort));
 
             for (int i = 0; i < 5; i++)
-                tiles.Add(new Tile(Tile.Type.gold, false, 1));
+                tiles.Add(new Tile(1, TileType.coins1));
             for (int i = 0; i < 5; i++)
-                tiles.Add(new Tile(Tile.Type.gold, false, 2));
+                tiles.Add(new Tile(2, TileType.coins1));
             for (int i = 0; i < 3; i++)
-                tiles.Add(new Tile(Tile.Type.gold, false, 3));
+                tiles.Add(new Tile(3, TileType.coins1));
             for (int i = 0; i < 2; i++)
-                tiles.Add(new Tile(Tile.Type.gold, false, 4));
-            tiles.Add(new Tile(Tile.Type.gold, false, 5));
+                tiles.Add(new Tile(4, TileType.coins1));
+            tiles.Add(new Tile(5, TileType.coins1));
 
             for (int i = 0; i < 2; i++)
-                tiles.Add(new Tile(Tile.Type.balloon));
+                tiles.Add(new Tile(TileType.balloon));
             for (int i = 0; i < 2; i++)
-                tiles.Add(new Tile(Tile.Type.cannon));
+                tiles.Add(new Tile(TileType.cannon));
 
             /*
-            tiles.Add(new Tile(Tile.Type.plane));
-            tiles.Add(new Tile(Tile.Type.horse));
-            tiles.Add(new Tile(Tile.Type.horse));
+            tiles.Add(new Tile(TileType.plane));
+            tiles.Add(new Tile(TileType.horse));
+            tiles.Add(new Tile(TileType.horse));
             */
             return tiles;
         }
-
-        public BitmapImage[,] GetBitmapImages() // returns two-dimensional array of images for tiles at the board
-        {
-            var imgs = new BitmapImage[13, 13];
-
-            for (int y = 0; y < 13; y++)
-            {
-                for (int x = 0; x < 13; x++)
-                {
-                    var currentTile = board[x, y];
-                    BitmapImage currentImage = new BitmapImage();
-                    // if image is null, return empty by default
-                    // TODO: change this later
-                    if (currentTile == null)
-                    {
-                        MessageBox.Show("Тайла нет");
-                        currentImage = new BitmapImage(new Uri("./tiles/empty.png", UriKind.Relative));
-                    }
-                    else currentImage = currentTile.GetBitmapImage();
-
-
-                    imgs[x, y] = currentImage;
-                }
-            }
-
-            return imgs;
-        }
-    }
-
-    public enum Team { none, red, black, yellow, white }
-
-
-    public class Tile
-    {
-        public enum Type
-        {
-            water, grass1, grass2, grass3, grass4, astr1, adiag1, adiag2, astr2, a3,
-            astr4, adiag4, rum, lab2, lab3, lab4, lab5, ice, hole, croc,
-            cannibal, fort, gfort, gold, balloon, cannon, horse, plane
-        }
-
-        private Uri ImageUri { get; set; } // relative path to image
-        private Type type { get; set; }
-
-        public short gold { get; set; }
-        public Team team { get; set; }
-        public bool pirate1 { get; set; }
-        public bool pirate2 { get; set; }
-        public bool pirate3 { get; set; }
-        public bool opened { get; set; }
-
-        public enum Direction { up, right, down, left }
-        //TODO: Direction of images (arrows)
-        public Direction direction { get; set; }
-
-
-        public Tile(Type type, bool opened = false, short gold = 0, Team team = Team.none, bool pirate1 = false, bool pirate2 = false, bool pirate3 = false)
-        {
-            Random r = new Random();
-
-            this.type = type;
-            this.gold = gold;
-            this.team = team;
-            this.pirate1 = pirate1;
-            this.pirate2 = pirate2;
-            this.pirate3 = pirate3;
-            this.opened = opened;
-
-            switch (type) // setup image paths according to tile types
-            {
-                case (Type.grass1):
-                    ImageUri = new Uri("./tiles/empty-1.png", UriKind.Relative);
-                    break;
-
-                case (Type.grass2):
-                    ImageUri = new Uri("./tiles/empty-2.png", UriKind.Relative);
-                    break;
-
-                case (Type.grass3):
-                    ImageUri = new Uri("./tiles/empty-3.png", UriKind.Relative);
-                    break;
-
-                case (Type.grass4):
-                    ImageUri = new Uri("./tiles/empty-4.png", UriKind.Relative);
-                    break;
-
-                case (Type.rum):
-                    ImageUri = new Uri("./tiles/keg-of-rum.png", UriKind.Relative);
-                    break;
-
-                case (Type.ice):
-                    ImageUri = new Uri("./tiles/ice.png", UriKind.Relative);
-                    break;
-
-                case (Type.hole):
-                    ImageUri = new Uri("./tiles/pitfall.png", UriKind.Relative);
-                    break;
-
-                case (Type.croc):
-                    ImageUri = new Uri("./tiles/crocodile.png", UriKind.Relative);
-                    break;
-
-                case (Type.cannibal):
-                    ImageUri = new Uri("./tiles/cannibal.png", UriKind.Relative);
-                    break;
-
-                case (Type.fort):
-                    ImageUri = new Uri("./tiles/fort.png", UriKind.Relative);
-                    break;
-
-                case (Type.gfort):
-                    ImageUri = new Uri("./tiles/fort-w-aborigine.png", UriKind.Relative);
-                    break;
-
-                case (Type.gold):
-                    ImageUri = new Uri("./tiles/coins-1.png", UriKind.Relative);
-                    break;
-
-                case (Type.balloon):
-                    ImageUri = new Uri("./tiles/balloon.png", UriKind.Relative);
-                    break;
-
-                case (Type.cannon):
-                    ImageUri = new Uri("./tiles/gun.png", UriKind.Relative);
-                    break;
-
-                case (Type.water):
-                    ImageUri = new Uri("./tiles/water.png", UriKind.Relative);
-                    break;
-
-                case (Type.astr1):
-                    ImageUri = new Uri("./tiles/arrow-1.png", UriKind.Relative);
-                    direction = (Direction)(r.Next() % 4);
-                    break;
-
-                case (Type.adiag1):
-                    ImageUri = new Uri("./tiles/arrow-2.png", UriKind.Relative);
-                    direction = (Direction)(r.Next() % 4);
-                    break;
-
-                case (Type.adiag2):
-                    ImageUri = new Uri("./tiles/arrow-4.png", UriKind.Relative);
-                    direction = (Direction)(r.Next() % 4);
-                    break;
-
-                case (Type.astr2):
-                    ImageUri = new Uri("./tiles/arrow-3.png", UriKind.Relative);
-                    direction = (Direction)(r.Next() % 4);
-                    break;
-
-                case (Type.a3):
-                    ImageUri = new Uri("./tiles/arrow-5.png", UriKind.Relative);
-                    direction = (Direction)(r.Next() % 4);
-                    break;
-
-                case (Type.astr4):
-                    ImageUri = new Uri("./tiles/arrow-6.png", UriKind.Relative);
-                    direction = (Direction)(r.Next() % 4);
-                    break;
-
-                case (Type.adiag4):
-                    ImageUri = new Uri("./tiles/arrow-7.png", UriKind.Relative);
-                    direction = (Direction)(r.Next() % 4);
-                    break;
-
-                case (Type.lab2):
-                    ImageUri = new Uri("./tiles/rotate-2.png", UriKind.Relative);
-                    break;
-
-                case (Type.lab3):
-                    ImageUri = new Uri("./tiles/rotate-3.png", UriKind.Relative);
-                    break;
-
-                case (Type.lab4):
-                    ImageUri = new Uri("./tiles/rotate-4.png", UriKind.Relative);
-                    break;
-
-                case (Type.lab5):
-                    ImageUri = new Uri("./tiles/rotate-5.png", UriKind.Relative);
-                    break;
-
-                case (Type.horse):
-                    ImageUri = new Uri("./tiles/horse.png", UriKind.Relative);
-                    break;
-
-                case (Type.plane):
-                    ImageUri = new Uri("./tiles/airplane.png", UriKind.Relative);
-                    break;
-
-                default: // TODO: remove this when proper image arranging is done
-                    ImageUri = new Uri("./tiles/empty!.png", UriKind.Relative);
-                    break;
-            }
-        }
-
-        public BitmapImage GetBitmapImage() // returns assigned bitmap image for tile
-        {
-            BitmapImage img = new BitmapImage();
-            img.BeginInit();
-            img.UriSource = ImageUri;
-            img.EndInit();
-            return img;
-        }
-    }
-
-    class Pirate
-    {
-        public enum id { first, second, third }
-
-    }
-    class Ship
-    {
-
     }
 }
